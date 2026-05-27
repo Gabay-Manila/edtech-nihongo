@@ -82,7 +82,6 @@
     function buildLessonMenu() {
         const chooser = document.getElementById('lesson-chooser');
         chooser.innerHTML = '';
-        // 🚨 棟梁！ループの終わりを「19」に変更し、全19部屋（ひらがな1個＋いろどり18個）を確保しました！
         for(let i = 1; i <= 19; i++) {
             const opt = document.createElement('option');
             opt.value = String(i);
@@ -130,7 +129,6 @@
                 <div style="padding: 20px; text-align: center; color: #8e8e93;">
                     <p style="font-size: 3rem; margin: 0;">🚧</p>
                     <p><b>js/data-l${lessonNum}.js</b> がまだフォルダに配置されていません。</p>
-                    <p style="font-size: 0.8rem;">ウノ、ドス、トレスが現在データ削り出し中です！</p>
                 </div>`;
         };
         
@@ -225,11 +223,17 @@
         });
     }
 
+    // 🚨 Androidフリーズ対応：50ミリ秒のバッファを挟む安全な発話処理
     function generateSpeech(text) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'ja-JP'; utterance.rate = 0.9;
-        window.speechSynthesis.speak(utterance);
+        window.speechSynthesis.cancel(); // まず前の再生を停止
+        
+        // Androidの音声エンジンがリフレッシュする時間を確保（タイマー工法）
+        setTimeout(() => {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'ja-JP'; 
+            utterance.rate = 0.9;
+            window.speechSynthesis.speak(utterance);
+        }, 50);
     }
 
     function checkAnswer(btn, qId, selected, correct) {
