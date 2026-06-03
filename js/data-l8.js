@@ -1,101 +1,102 @@
 // =========================================================================
-// JFT究極・サバイバル対策 A1判定特化版 【第8課：位置と方向の指示・誘導】
-// テーマ：具体的な位置（となり・うしろ）と、移動の方向（右・左・まっすぐ）
-// 仕様：マザー金型(index.html)へそのまま100%合流可能な軽量JSON構造
+// JFT究極・サバイバル対策 A1判定特化版 【第8課：職場のコミュニケーション・完全修正版】
+// 不具合修正：英語選択時にタガログ語が漏れるバグを「optionsEn」の増設で100%駆逐！
+// 仕様：マザー金型へそのまま合流可能。途中で切り替えても学習過程を引き継ぎます。
 // =========================================================================
 
 var jftQuizData = {
-  lessonTitle: "第8課：【位置と方向】移動と誘導のサバイバルことば 🦽🗺️",
+  lessonTitle: "第8課：【職場のコミュニケーション】指示と確認のことば 🗣️📋",
   questions: [
     {
       id: 1,
       type: "audio-vocabulary",
-      speechText: "みぎにまがります",
-      options: ["Liko sa kaliwa (左に曲がります)", "Liko sa kanan (右に曲がります)", "Derecho lang (まっすぐ行きます)"],
-      optionsJa: ["ひだりにまがります", "みぎにまがります", "まっすぐいきます"],
-      questionText: {
-        tl: "Pakinggan ang audio. Ano ang ibig sabihin nito kapag nagtutulak ng wheelchair?",
-        en: "Listen to the audio. What does it mean when pushing a wheelchair?",
-        ja: "おんせいをきいてください。車椅子（くるまいす）を押しているとき、どちらに進みますか。"
-      },
+      speechText: "わかりました",
+      options: ["Hindi ko alam (わかりません)", "Naintindihan ko (わかりました)", "Sandali lang (ちょっと待ってください)"],
+      optionsJa: ["わかりません", "わかりました", "ちょっとまってください"],
+      optionsEn: ["I don't understand (わかりません)", "I understood (わかりました)", "Please wait a moment (ちょっと待ってください)"],
       correctIndex: 1,
+      questionText: {
+        tl: "Pakinggan ang audio. Ano ang tamang isasagot kapag naintindihan mo ang utos ng iyong senior?",
+        en: "Listen to the audio. What is the correct response when you understand your senior's instruction?",
+        ja: "おんせいをきいてください。先輩の指示を正しく理解したとき、何と言って返事をしますか。"
+      },
       explanation: {
-        tl: "Ang narinig mo ay 'Migi ni magarimasu' (Liko sa kanan). Napakahalagang sabihin ito bago lumiko para hindi magulat ang pasyente sa wheelchair!",
-        en: "You heard 'Migi ni magarimasu' (Turn right). It is essential to say this out loud before turning so the resident feels safe!",
-        ja: "「みぎにまがります」と言っています。車椅子を動かすとき、急に曲がると利用者が怖がってしまいます。曲がる前の声かけ（誘導）として必須のフレーズです。"
+        tl: "Ang narinig mo ay 'Wakarimashita' (Naintindihan ko). Ito ang pinakamahalagang tugon sa trabaho para magbigay ng kapanatagan sa iyong kasamahan.",
+        en: "You heard 'Wakarimashita' (I understood). This is the most fundamental response in a Japanese workplace to show you are ready.",
+        ja: "「わかりました」と言っています。指示を受けた際、大きな声でこれを言うだけで現場の信頼関係がグッと引き締まる、サバイバル必須の返事です。"
       }
     },
     {
       id: 2,
       type: "audio-vocabulary",
-      speechText: "まっすぐいきます",
-      options: ["Huminto rito (ここで止まります)", "Liko sa kanan (右に曲がります)", "Derecho lang (まっすぐ行きます)"],
-      optionsJa: ["ここでとまります", "みぎにまがります", "まっすぐいきます"],
-      questionText: {
-        tl: "Pakinggan ang audio. Anong direksyon ang tinutukoy nito?",
-        en: "Listen to the audio. Which direction does this refer to?",
-        ja: "おんせいをきいてください。どの方向に進みますか。"
-      },
+      speechText: "もう一度お願いします",
+      options: ["Paki-sulat po dito (ここに書いてください)", "Salamat po (ありがとうございます)", "Paki-ulit po muli (もう一度お願いします)"],
+      optionsJa: ["ここにかいてください", "ありがとうございます", "もういちどおねがいします"],
+      optionsEn: ["Please write it down here (ここに書いてください)", "Thank you very much (ありがとうございます)", "Please say it once more (もう一度お願いします)"],
       correctIndex: 2,
+      questionText: {
+        tl: "Pakinggan ang audio. Ano ang sasabihin mo kapag hindi mo narinig nang maayos ang sinabi?",
+        en: "Listen to the audio. What should you say when you couldn't hear or understand what was said?",
+        ja: "おんせいをきいてください。相手の言葉が聞き取れなかったとき、丁寧に聞き返す言葉はどれですか。"
+      },
       explanation: {
-        tl: "Ito ay 'Massugu ikimasu' (Derecho lang / Go straight). Ginagamit ito kapag naglalakad kasama ang pasyente o kapag nagbibigay ng direksyon.",
-        en: "This is 'Massugu ikimasu' (Go straight). Used frequently when walking together with residents or giving clear directions.",
-        ja: "「まっすぐいきます」と言っています。歩行介助や車椅子を押して直進するときの基本的な声かけです。"
+        tl: "Ito ay 'Mou ichido onegai shimasu' (Paki-ulit po muli). Huwag mahihiyang sabihin ito kapag hindi sigurado upang maiwasan ang pagkakamali sa pag-aalaga!",
+        en: "This is 'Mou ichido onegai shimasu' (One more time, please). Never hesitate to use this phrase to avoid mistakes in caregiving!",
+        ja: "「もういちどおねがいします（もう一度お願いします）」と言っています。わからないまま返事をして間違えるのが一番危ないですから、現場で堂々と聞き返すための命綱ことばです。"
       }
     },
     {
       id: 3,
       type: "character-match",
-      speechText: "ひだり",
-      options: ["Kanan (右 / Migi)", "Kaliwa (左 / Hidari)", "Likod (後ろ / Ushiro)"],
-      optionsJa: ["みぎ", "ひだり", "うしろ"],
+      speechText: "ちょっと待ってください",
+      options: ["Sandali lang po (ちょっと待ってください)", "Puwede na pong umalis (もう帰ってもいいです)", "Mag-ingat po kayo (気をつけてください)"],
+      optionsJa: ["ちょっとまってください", "もうかってもいいです", "気をつけてください"],
+      optionsEn: ["Please wait a moment (ちょっと待ってください)", "You may go home now (もう帰ってもいいです)", "Please be careful (気をつけてください)"],
       questionText: {
-        tl: "Basahin ang salitang Hapon: 「ひだり」. Ano ang tamang direksyon nito?",
-        en: "Read the Japanese word: 「ひだり」. What is the correct direction?",
-        ja: "文字を読んでください：「ひだり」。どちらの方向ですか。"
+        tl: "Basahin ang parirala: 「ちょっと待ってください」. Kailan ito ginagamit?",
+        en: "Read the phrase: 「ちょっと待ってください」. When is this phrase used?",
+        ja: "文字を読んでください：「ちょっと待ってください」。どのようなときに使う言葉ですか。"
       },
-      correctIndex: 1,
+      correctIndex: 0,
       explanation: {
-        tl: "Ito ay 'Hidari' (Kaliwa). Kabaligtaran nito ang 'Migi' (Kanan). Siguraduhing kabisado ang dalawang ito para sa JFT exam!",
-        en: "This is 'Hidari' (Left). The opposite of 'Migi' (Right). Make sure you know both terms perfectly for the JFT exam!",
-        ja: "「ひだり（左）」のことです。「みぎ（右）」と混同しやすいので、文字と方向のイメージを完全に一致させておきましょう。"
+        tl: "Ito ay 'Chotto matte kudasai' (Sandali lang po / Please wait a moment). Ginagamit ito kapag may tinatapos kang ibang gawain at kailangan mong pakiusapan ang pasyente o kasamahan.",
+        en: "This is 'Chotto matte kudasai' (Please wait a moment). Used when you are in the middle of a task and need a senior or resident to hold on for a second.",
+        ja: "「ちょっと待ってください」という意味です。ナースコールが重なったときや、他の利用者の介助中で動けないときなどに、少しだけ待ってもらうための実戦クッション表現です。"
       }
     },
     {
       id: 4,
       type: "reading-context",
-      speechText: "ベッドのとなり",
-      options: ["Sa tabi ng kama (ベッドのとなり)", "Sa ilalim ng kama (ベッドのした)", "Sa likod ng wheelchair (くるまいすのうしろ)"],
-      optionsJa: ["ベッドのとなり", "ベッドのした", "くるまいすのうしろ"],
+      speechText: "確認します",
+      options: ["Tatanong ako (聞きます)", "Iche-tsuri ko / Ibe-verify ko (確認します)", "Isusulat ko (書きます)"],
+      optionsJa: ["ききます", "かくにんします", "かきます"],
+      optionsEn: ["I will ask (聞きます)", "I will check / verify (確認します)", "I will write down (書きます)"],
+      correctIndex: 1,
       questionText: {
-        tl: "Saan mo ilalagay ang tsinelas o gamit ng pasyente ayon sa pariralang ito: 「ベッドのとなり」?",
-        en: "Where should you place the resident's slippers or items based on this phrase: 「ベッドのとなり」?",
-        ja: "利用者の靴（くつ）や荷物をどこに置きますか：「ベッドのとなり」"
+        tl: "Ano ang sasabihin mo bago mo i-double check ang gamot o pangalan ng pasyente: 「確認します」?",
+        en: "What should you say before double-checking a resident's medicine or name: 「確認します」?",
+        ja: "利用者の名前や薬をダブルチェックするとき、声に出して宣言する言葉はどれですか：「確認します」"
       },
-      correctIndex: 0,
       explanation: {
-        tl: "Ito ay 'Beddo no tonari' (Sa tabi ng kama / Next to the bed). Ang 'Tonari' ay ginagamit para sa mga bagay na magkatabi o magkasunod.",
-        en: "This is 'Beddo no tonari' (Next to the bed). 'Tonari' is a key vocabulary word for describing positions in a multi-bed room.",
-        ja: "「ベッドのとなり（隣）」という意味です。相部屋（４人部屋など）で「となりのベッドの利用者さん」と言ったり、物を置く場所を指定するときによく使います。"
+        tl: "Ito ay 'Kakunin shimasu' (Ibe-verify ko / I will check). Napakahalaga ng salitang ito sa介護 (caregiving) upang maiwasan ang anumang aksidente.",
+        en: "This is 'Kakunin shimasu' (I will check/confirm). A vital safety phrase used constantly in Japanese caregiving to prevent mistakes.",
+        ja: "「確認します（かくにんします）」という意味です。事故（誤薬など）を防ぐために、指差し呼称（ゆびさしこしょう）をしながら、トリプルチェックする際の基本動作ことばです。"
       }
     },
     {
       id: 5,
       type: "reading-context",
-      speechText: "くるまいすのうしろ",
-      options: ["Sa harap ng lamesa (つくえのまえ)", "Sa tabi ng kama (ベッドのとなり)", "Sa likod ng wheelchair (くるまいすのうしろ)"],
-      optionsJa: ["つくえのまえ", "ベッドのとなり", "くるまいすのうしろ"],
+      speechText: "手伝ってください",
+      options: ["Paki-tulungan po ako (手伝ってください)", "Paki-turuan po ako (教えてください)", "Kaya ko na po ito (自分でできます)"],
+      optionsJa: ["てつだってください", "おしえてください", "じぶんでできます"],
+      optionsEn: ["Please help me (手伝ってください)", "Please teach me (教えてください)", "I can do it myself (自分でできます)"],
+      correctIndex: 0,
       questionText: {
-        tl: "Suriin ang posisyon sa pariralang ito: 「くるまいすのうしろ」",
-        en: "Check the position indicated in this phrase: 「くるまいすのうしろ」",
-        ja: "位置を確認してください：「くるまいすのうしろ」"
+        tl: "Ano ang hihilingin mo sa iyong kasamahan kapag mabigat ang pasyente at hindi mo kayang buhatin mag-isa: 「手伝ってください」",
+        en: "What should you say to a colleague when a resident is too heavy to transfer by yourself: 「手伝ってください」",
+        ja: "利用者の体を一人で支えるのが大変なとき、近くのスタッフに協力を頼む言葉はどれですか：「手伝ってください」"
       },
-      correctIndex: 2,
       explanation: {
-        tl: "Ito ay 'Kurumaisu no ushiro' (Sa likod ng wheelchair / Behind the wheelchair). Ito ang tamang posisyon ng caregiver kapag tinutulak ang wheelchair!",
-        en: "This is 'Kurumaisu no ushiro' (Behind the wheelchair). This is where you stand as a caregiver when preparing to assist the resident!",
-        ja: "「くるまいすのうしろ（車椅子の後ろ）」という意味です。介助者が立つ位置や、車椅子のポケットにある荷物を指すときによく使われるサバイバル表現です。"
-      }
-    }
-  ]
-};
+        tl: "Ito ay 'Tetsudatte kudasai' (Paki-tulungan po ako / Please help me). Huwag pipilitin mag-isa upang maiwasan ang pagbagsak ng pasyente o pagsakit ng iyong likod!",
+        en: "This is 'Tetsudatte kudasai' (Please help me). Essential teamwork phrase to prevent resident falls and caregiver back injuries!",
+        ja: "「
