@@ -7,175 +7,38 @@
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
   
   <style>
-    /* =========================================================================
-       🎨 棟梁監修：柔らかデザイン・スタイルシート（基本の青ベース）
-       ========================================================================= */
+    /* 🎨 棟梁監修：柔らかデザイン（基本の青ベース） */
     :root {
-      --primary-blue: #1e3a8a;       /* 信頼の基本の青 */
-      --primary-blue-light: #eff6ff; /* 柔らかい薄青の背景 */
-      --accent-red: #ef4444;         /* NIHONGOの赤 */
-      --text-dark: #1e293b;          /* 読みやすい泥色 */
-      --radius-round: 20px;          /* ぽってりした丸みの金型 */
+      --primary-blue: #1e3a8a;
+      --primary-blue-light: #eff6ff;
+      --accent-red: #ef4444;
+      --text-dark: #1e293b;
+      --radius-round: 20px;
     }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Zen Maru Gothic', sans-serif; /* 全面丸ゴシック化 */
-    }
-
-    body {
-      background-color: #f8fafc;
-      color: var(--text-dark);
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .app-container {
-      width: 100%;
-      max-width: 500px;
-      background: white;
-      border-radius: var(--radius-round);
-      box-shadow: 0 10px 25px rgba(30, 58, 138, 0.05);
-      padding: 20px;
-      border: 2px solid var(--primary-blue-light);
-    }
-
-    /* 招き猫ロゴの表示エリア */
-    .logo-area {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      margin-bottom: 16px;
-    }
-
-    /* 🧭 要望1：言語選択ボタンの並び（左から日本語、英語、タガログ語） */
-    .lang-selector {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-
-    .lang-btn {
-      border: 2px solid var(--primary-blue);
-      background: white;
-      color: var(--primary-blue);
-      padding: 10px 4px;
-      font-size: 14px;
-      font-weight: 700;
-      border-radius: var(--radius-round);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .lang-btn.active {
-      background: var(--primary-blue);
-      color: white;
-    }
-
-    /* 課のドロップダウン選択 */
-    .lesson-selector-box {
-      margin-bottom: 20px;
-    }
-
-    select {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--primary-blue);
-      border: 2px solid var(--primary-blue);
-      border-radius: var(--radius-round);
-      background-color: white;
-    }
-
-    /* クイズカード */
-    .quiz-card {
-      background: var(--primary-blue-light);
-      border-radius: var(--radius-round);
-      padding: 20px;
-      margin-bottom: 20px;
-      border: 1px solid #dbeafe;
-    }
-
-    .question-title {
-      font-size: 18px;
-      font-weight: 900;
-      color: var(--primary-blue);
-      margin-bottom: 12px;
-    }
-
-    /* 🔊 音声再生ボタン */
-    .audio-trigger-btn {
-      background: var(--accent-red);
-      color: white;
-      border: none;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      font-size: 24px;
-      cursor: pointer;
-      display: block;
-      margin: 0 auto 16px;
-      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
-    }
-
-    /* 🧱 三択の選択肢ボタン（丸みと柔らかさの極み） */
-    .options-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .option-btn {
-      width: 100%;
-      background: white;
-      border: 2px solid #cbd5e1;
-      padding: 14px 16px;
-      text-align: left;
-      font-size: 15px;
-      font-weight: 700;
-      border-radius: var(--radius-round);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      color: var(--text-dark);
-    }
-
-    .option-btn:hover {
-      border-color: var(--primary-blue);
-      background: #f0fdf4;
-    }
-
-    /* 🇯🇵 ひらがなの一覧表スタイル */
-    .hiragana-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      margin-top: 16px;
-    }
-
-    .kana-btn {
-      background: white;
-      border: 2px solid var(--primary-blue-light);
-      padding: 10px 0;
-      font-size: 18px;
-      font-weight: 700;
-      border-radius: 12px;
-      color: var(--primary-blue);
-      cursor: pointer;
-      text-align: center;
-      transition: background 0.2s;
-    }
-
-    .kana-btn:active {
-      background: var(--primary-blue);
-      color: white;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Zen Maru Gothic', sans-serif; }
+    body { background-color: #f8fafc; color: var(--text-dark); padding: 16px; display: flex; flex-direction: column; align-items: center; }
+    .app-container { width: 100%; max-width: 500px; background: white; border-radius: var(--radius-round); box-shadow: 0 10px 25px rgba(30, 58, 138, 0.05); padding: 20px; border: 2px solid var(--primary-blue-light); }
+    .logo-area { width: 100%; display: flex; justify-content: center; margin-bottom: 16px; }
+    
+    /* 🧭 要望：言語選択（左から日本語、英語、タガログ語） */
+    .lang-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+    .lang-btn { border: 2px solid var(--primary-blue); background: white; color: var(--primary-blue); padding: 10px 4px; font-size: 14px; font-weight: 700; border-radius: var(--radius-round); cursor: pointer; transition: all 0.2s ease; text-align: center; }
+    .lang-btn.active { background: var(--primary-blue); color: white; }
+    
+    .lesson-selector-box { margin-bottom: 20px; }
+    select { width: 100%; padding: 12px; font-size: 16px; font-weight: 700; color: var(--primary-blue); border: 2px solid var(--primary-blue); border-radius: var(--radius-round); background-color: white; }
+    .quiz-card { background: var(--primary-blue-light); border-radius: var(--radius-round); padding: 20px; margin-bottom: 20px; border: 1px solid #dbeafe; }
+    .question-title { font-size: 17px; font-weight: 900; color: var(--primary-blue); margin-bottom: 12px; line-height: 1.5; }
+    .audio-trigger-btn { background: var(--accent-red); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; font-size: 24px; cursor: pointer; display: block; margin: 0 auto 16px; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); }
+    
+    /* 🧱 三択ボタン（丸みと柔らかさの極み） */
+    .options-list { display: flex; flex-direction: column; gap: 12px; }
+    .option-btn { width: 100%; background: white; border: 2px solid #cbd5e1; padding: 14px 16px; text-align: left; font-size: 15px; font-weight: 700; border-radius: var(--radius-round); cursor: pointer; transition: all 0.2s ease; color: var(--text-dark); line-height: 1.4; }
+    .option-btn:hover { border-color: var(--primary-blue); background: #f0fdf4; }
+    
+    .hiragana-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 16px; }
+    .kana-btn { background: white; border: 2px solid var(--primary-blue-light); padding: 10px 0; font-size: 18px; font-weight: 700; border-radius: 12px; color: var(--primary-blue); cursor: pointer; text-align: center; }
+    .kana-btn:active { background: var(--primary-blue); color: white; }
     .hidden { display: none !important; }
   </style>
 </head>
@@ -183,7 +46,7 @@
 
   <div class="app-container">
     <div class="logo-area">
-      <img src="nihongo-logo.svg" alt="EdTech Gabay Logo" style="width: 100%; max-width: 320px;" onerror="this.style.display='none'">
+      <img src="nihongo-logo.svg" alt="EdTech Gabay Logo" style="width: 100%; max-width: 320px;">
     </div>
 
     <div class="lang-selector">
@@ -202,13 +65,13 @@
 
     <div id="quiz-room">
       <div class="quiz-card">
-        <div class="question-title" id="question-text-box">問題文がここに流れます</div>
+        <div class="question-title" id="question-text-box">Loading...</div>
         <button class="audio-trigger-btn" id="audio-btn" onclick="playQuestionSpeech()">🔊</button>
         
         <div class="options-list">
-          <button class="option-btn" id="opt-0" onclick="checkAnswer(0)">選択肢 1</button>
-          <button class="option-btn" id="opt-1" onclick="checkAnswer(1)">選択肢 2</button>
-          <button class="option-btn" id="opt-2" onclick="checkAnswer(2)">選択肢 3</button>
+          <button class="option-btn" id="option-btn-0" onclick="checkAnswer(0)">選択肢 1</button>
+          <button class="option-btn" id="option-btn-1" onclick="checkAnswer(1)">選択肢 2</button>
+          <button class="option-btn" id="option-btn-2" onclick="checkAnswer(2)">選択肢 3</button>
         </div>
       </div>
     </div>
@@ -220,22 +83,19 @@
   </div>
 
   <script>
-    // 現在の状態（★要望2＆3：記憶倉庫から安全に復元、リロード対策）
+    // ⚙️ 記憶倉庫（localStorage）から状態を復元
     var currentLesson = localStorage.getItem('gabay_current_lesson') || '10';
     var currentLang = localStorage.getItem('gabay_lang') || 'ja';
-    var currentQuestionIndex = 0; // 進捗インデックス
+    var currentQuestionIndex = 0; 
 
-    // 現場のひらがな金型
     var k2KanaList = ["あ","い","う","え","お","か","き","く","け","こ","さ","し","す","せ","そ","た","ち","つ","て","と","な","に","ぬ","ね","の","は","ひ","ふ","へ","ほ","ま","み","む","め","も","や","ゆ","よ","ら","り","る","れ","ろ","わ","を","ん"];
 
     document.addEventListener('DOMContentLoaded', function() {
-      // 初期化の段取り
       document.getElementById('lesson-picker').value = currentLesson;
       buildHiraganaGrid();
       loadLessonScript(currentLesson);
     });
 
-    // 動的に課のjsファイルを呼び出す配管
     function loadLessonScript(lessonNum) {
       var oldScript = document.getElementById('lesson-data-script');
       if (oldScript) oldScript.remove();
@@ -243,115 +103,95 @@
       var script = document.createElement('script');
       script.id = 'lesson-data-script';
       script.src = 'js/data-l' + lessonNum + '.js';
-      
-      script.onload = function() {
-        // スクリプトが読み込まれたら、進捗を引き継いだまま描画！
-        renderQuestionStructure();
-      };
+      script.onload = function() { renderQuestionStructure(); };
       document.head.appendChild(script);
     }
 
     function changeLesson(val) {
       currentLesson = val;
       localStorage.setItem('gabay_current_lesson', val);
-      currentQuestionIndex = 0; // 課を変えた時だけは最初に戻す
+      currentQuestionIndex = 0; 
       loadLessonScript(val);
     }
 
-    // ★要望2：進捗を引き継ぐ言語切り替え（辞書機能化の核心）
+    // 💡 辞書機能：進捗をキープしたまま言語をパチパチ切り替える
     function switchLanguage(langCode) {
       currentLang = langCode;
-      localStorage.setItem('gabay_lang', langCode); // 記憶にガチッとロック
-      
-      renderQuestionStructure(); // ★最初に戻さず、いま解いている問題をそのまま再描画！
+      localStorage.setItem('gabay_lang', langCode); 
+      renderQuestionStructure(); 
     }
 
-    // ★重要：言語ごとに開くべき三択の引き出しを100%安全に仕分ける
     function getDisplayOptions(q) {
       if (currentLang === 'ja') return q.optionsJa;
       if (currentLang === 'en') {
-        // 棟梁、ここがバグを仕留める溶接です！optionsEnがあれば使い、なければタガログ語に逃がします
-        return q.optionsEn ? q.optionsEn : q.options;
+        return q.optionsEn ? q.optionsEn : q.options; // 英語データが無ければタガログへ安全に着地
       }
-      return q.options; // デフォルト：タガログ語
+      return q.options; 
     }
 
-    // 画面の組み立て・描画関数
     function renderQuestionStructure() {
-      // 1. 言語ボタンの見た目（アクティブ色）を更新
       ['ja', 'en', 'tl'].forEach(function(l) {
         document.getElementById('btn-lang-' + l).classList.remove('active');
       });
       document.getElementById('btn-lang-' + currentLang).classList.add('active');
 
-      // 2. 第1課（スターター）なら、ひらがな表をパッと出現させる仕掛け
       if (currentLesson === '1') {
         document.getElementById('hiragana-board').classList.remove('hidden');
       } else {
         document.getElementById('hiragana-board').classList.add('hidden');
       }
 
-      // クイズデータ（jftQuizData）が無ければここで一度戻る
       if (typeof jftQuizData === 'undefined') return;
-
       var q = jftQuizData.questions[currentQuestionIndex];
       if (!q) return;
 
-      // [A] 問題文の流し込み（現在の言語、無ければ日本語）
+      // 問題文の流し込み
       var qText = q.questionText[currentLang] || q.questionText['ja'];
-      document.getElementById('question-text-box').innerText = qText;
+      document.getElementById('question-text-box').innerText = "Q" + (currentQuestionIndex + 1) + ". " + qText;
 
-      // [B] 三択ボタンの書き換え（仕分け配管経由）
+      // 三択ボタンの書き換え（修正されたID配管にガチッと流し込みます）
       var opts = getDisplayOptions(q);
       for (var i = 0; i < 3; i++) {
-        var btn = document.getElementById('opt-' + i);
+        var btn = document.getElementById('option-btn-' + i);
         if (btn && opts[i]) {
           btn.innerText = opts[i];
         }
       }
     }
 
-    // 🔊 クイズの音声発声配管
     function playQuestionSpeech() {
       if (typeof jftQuizData === 'undefined') return;
       var q = jftQuizData.questions[currentQuestionIndex];
       if (!q || !q.speechText) return;
-      
       speakJapaneseText(q.speechText);
     }
 
-    // 🔊 ★要望4：ひらがな一覧表の「おすと喋る」外付け仕掛け
     function buildHiraganaGrid() {
       var box = document.getElementById('kana-grid-box');
       box.innerHTML = '';
       k2KanaList.forEach(function(kana) {
         var btn = document.createElement('button');
-        class_name = 'kana-btn';
         btn.className = 'kana-btn';
         btn.innerText = kana;
-        // 押した瞬間に内蔵音声に放り込む配管！
         btn.onclick = function() { speakJapaneseText(kana); };
         box.appendChild(btn);
       });
     }
 
-    // 共通音声エンジン（Web Speech API）
     function speakJapaneseText(text) {
       if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel(); // 前の音声をブチッと切る優しい設計
+        window.speechSynthesis.cancel(); 
         var u = new SpeechSynthesisUtterance(text);
         u.lang = 'ja-JP';
-        u.rate = 0.85; // 女の子が聞き取りやすいように、ほんの少しだけゆっくり
+        u.rate = 0.85; 
         window.speechSynthesis.speak(u);
       }
     }
 
-    // クイズの正誤判定（進捗キープ確認用）
     function checkAnswer(idx) {
       var q = jftQuizData.questions[currentQuestionIndex];
       if (idx === q.correctIndex) {
         alert("✔️ Correct / Tama!");
-        // 次の問題へ足場を進める
         currentQuestionIndex++;
         if (currentQuestionIndex >= jftQuizData.questions.length) {
           alert("🏁 Lesson Cleared! / Tapos na!");
