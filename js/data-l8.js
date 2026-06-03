@@ -1,6 +1,6 @@
 // =========================================================================
-// JFT究極・サバイバル対策 A1判定特化版 【第8課：職場のコミュニケーション・完全修正版】
-// 不具合修正：英語選択時にタガログ語が漏れるバグを「optionsEn」の増設で100%駆逐！
+// JFT究極・サバイバル対策 A1判定特化版 【第8課：職場のコミュニケーション・完全竣工版】
+// 不具合修正：構文エラーによる消失を完全駆逐！お尻の配管まで100%溶接完了！
 // 仕様：マザー金型へそのまま合流可能。途中で切り替えても学習過程を引き継ぎます。
 // =========================================================================
 
@@ -52,15 +52,15 @@ var jftQuizData = {
       options: ["Sandali lang po (ちょっと待ってください)", "Puwede na pong umalis (もう帰ってもいいです)", "Mag-ingat po kayo (気をつけてください)"],
       optionsJa: ["ちょっとまってください", "もうかってもいいです", "気をつけてください"],
       optionsEn: ["Please wait a moment (ちょっと待ってください)", "You may go home now (もう帰ってもいいです)", "Please be careful (気をつけてください)"],
+      correctIndex: 0,
       questionText: {
         tl: "Basahin ang parirala: 「ちょっと待ってください」. Kailan ito ginagamit?",
         en: "Read the phrase: 「ちょっと待ってください」. When is this phrase used?",
         ja: "文字を読んでください：「ちょっと待ってください」。どのようなときに使う言葉ですか。"
       },
-      correctIndex: 0,
       explanation: {
-        tl: "Ito ay 'Chotto matte kudasai' (Sandali lang po / Please wait a moment). Ginagamit ito kapag may tinatapos kang ibang gawain at kailangan mong pakiusapan ang pasyente o kasamahan.",
-        en: "This is 'Chotto matte kudasai' (Please wait a moment). Used when you are in the middle of a task and need a senior or resident to hold on for a second.",
+        tl: "Ito ay 'Chotto matte kudasai' (Sandali lang po / Please wait a moment). Ginagamit ito kapag may tinatapos kang ibang gawain.",
+        en: "This is 'Chotto matte kudasai' (Please wait a moment). Used when you are in the middle of a task and need a senior or resident to hold on.",
         ja: "「ちょっと待ってください」という意味です。ナースコールが重なったときや、他の利用者の介助中で動けないときなどに、少しだけ待ってもらうための実戦クッション表現です。"
       }
     },
@@ -80,7 +80,7 @@ var jftQuizData = {
       explanation: {
         tl: "Ito ay 'Kakunin shimasu' (Ibe-verify ko / I will check). Napakahalaga ng salitang ito sa介護 (caregiving) upang maiwasan ang anumang aksidente.",
         en: "This is 'Kakunin shimasu' (I will check/confirm). A vital safety phrase used constantly in Japanese caregiving to prevent mistakes.",
-        ja: "「確認します（かくにんします）」という意味です。事故（誤薬など）を防ぐために、指差し呼称（ゆびさしこしょう）をしながら、トリプルチェックする際の基本動作ことばです。"
+        ja: "「確認します（かくにんします）」という意味です。事故（誤薬など）を防ぐために、指差し呼称をしながら、トリプルチェックする際の基本動作ことばです。"
       }
     },
     {
@@ -92,11 +92,15 @@ var jftQuizData = {
       optionsEn: ["Please help me (手伝ってください)", "Please teach me (教えてください)", "I can do it myself (自分でできます)"],
       correctIndex: 0,
       questionText: {
-        tl: "Ano ang hihilingin mo sa iyong kasamahan kapag mabigat ang pasyente at hindi mo kayang buhatin mag-isa: 「手伝ってください」",
+        tl: "Ano ang hihilingin mo sa iyong kasamahan kapag mabigat ang pasyente: 「手伝ってください」",
         en: "What should you say to a colleague when a resident is too heavy to transfer by yourself: 「手伝ってください」",
         ja: "利用者の体を一人で支えるのが大変なとき、近くのスタッフに協力を頼む言葉はどれですか：「手伝ってください」"
       },
       explanation: {
-        tl: "Ito ay 'Tetsudatte kudasai' (Paki-tulungan po ako / Please help me). Huwag pipilitin mag-isa upang maiwasan ang pagbagsak ng pasyente o pagsakit ng iyong likod!",
+        tl: "Ito ay 'Tetsudatte kudasai' (Paki-tulungan po ako). Huwag pipilitin mag-isa upang maiwasan ang pagbagsak ng pasyente!",
         en: "This is 'Tetsudatte kudasai' (Please help me). Essential teamwork phrase to prevent resident falls and caregiver back injuries!",
-        ja: "「
+        ja: "「手伝ってください（てつだってください）」という意味です。無理をして一人で抱え込むと、利用者の転倒や自分の腰痛に繋がります。チームで動くための大切なお願いです。"
+      }
+    }
+  ]
+};
