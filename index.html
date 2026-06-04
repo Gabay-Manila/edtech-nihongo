@@ -7,7 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
   
   <style>
-    /* 🎨 棟梁監修：柔らかデザイン（基本の青ベース） */
+    /* 🎨 棟梁監修：柔らか丸ゴシック・青ベースUI */
     :root {
       --primary-blue: #1e3a8a;
       --primary-blue-light: #eff6ff;
@@ -20,7 +20,7 @@
     .app-container { width: 100%; max-width: 500px; background: white; border-radius: var(--radius-round); box-shadow: 0 10px 25px rgba(30, 58, 138, 0.05); padding: 20px; border: 2px solid var(--primary-blue-light); }
     .logo-area { width: 100%; display: flex; justify-content: center; margin-bottom: 16px; }
     
-    /* 🧭 要望：言語選択（左から日本語、英語、タガログ語） */
+    /* 🧭 並び順：左から日本語、English、Tagalog */
     .lang-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
     .lang-btn { border: 2px solid var(--primary-blue); background: white; color: var(--primary-blue); padding: 10px 4px; font-size: 14px; font-weight: 700; border-radius: var(--radius-round); cursor: pointer; transition: all 0.2s ease; text-align: center; }
     .lang-btn.active { background: var(--primary-blue); color: white; }
@@ -31,7 +31,6 @@
     .question-title { font-size: 17px; font-weight: 900; color: var(--primary-blue); margin-bottom: 12px; line-height: 1.5; }
     .audio-trigger-btn { background: var(--accent-red); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; font-size: 24px; cursor: pointer; display: block; margin: 0 auto 16px; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); }
     
-    /* 🧱 三択ボタン（丸みと柔らかさの極み） */
     .options-list { display: flex; flex-direction: column; gap: 12px; }
     .option-btn { width: 100%; background: white; border: 2px solid #cbd5e1; padding: 14px 16px; text-align: left; font-size: 15px; font-weight: 700; border-radius: var(--radius-round); cursor: pointer; transition: all 0.2s ease; color: var(--text-dark); line-height: 1.4; }
     .option-btn:hover { border-color: var(--primary-blue); background: #f0fdf4; }
@@ -57,9 +56,16 @@
 
     <div class="lesson-selector-box">
       <select id="lesson-picker" onchange="changeLesson(this.value)">
-        <option value="8">第8課：職場のコミュニケーション 🗣️</option>
-        <option value="9">第9課：体調と気分 🩺</option>
-        <option value="10">第10課：服装と着替え 👕</option>
+        <option value="1">第1課：ひらがな学習（あ行〜ん）</option>
+        <option value="2">第2課：挨拶と現場サバイバル</option>
+        <option value="3">第3課：すみません、いま何時ですか</option>
+        <option value="4">第4課：これ、おねがいします（物・教室・指示）</option>
+        <option value="5">第5課：いまなんじですか（時間・曜日・場所）</option>
+        <option value="6">第6課：〜をください（食事・注文・個数）</option>
+        <option value="7">第7課：どこにありますか（位置・部屋・空間）</option>
+        <option value="8">第8課：【位置と方向】移動と誘導のサバイバルことば 🗺️</option>
+        <option value="9">第9課：【体調と気分】優しく気遣うサバイバルことば 🩺</option>
+        <option value="10">第10課：【服装と着替え】介助と身だしなみのことば 👕</option>
       </select>
     </div>
 
@@ -83,7 +89,7 @@
   </div>
 
   <script>
-    // ⚙️ 記憶倉庫（localStorage）から状態を復元
+    // ⚙️ 記憶倉庫（localStorage）から状態を復元（リロード対策）
     var currentLesson = localStorage.getItem('gabay_current_lesson') || '10';
     var currentLang = localStorage.getItem('gabay_lang') || 'ja';
     var currentQuestionIndex = 0; 
@@ -114,7 +120,7 @@
       loadLessonScript(val);
     }
 
-    // 💡 辞書機能：進捗をキープしたまま言語をパチパチ切り替える
+    // 💡 辞書機能：進捗を100%キープしたまま言語を切り替える
     function switchLanguage(langCode) {
       currentLang = langCode;
       localStorage.setItem('gabay_lang', langCode); 
@@ -124,7 +130,7 @@
     function getDisplayOptions(q) {
       if (currentLang === 'ja') return q.optionsJa;
       if (currentLang === 'en') {
-        return q.optionsEn ? q.optionsEn : q.options; // 英語データが無ければタガログへ安全に着地
+        return q.optionsEn ? q.optionsEn : q.options; // 英語データがあれば使い、1〜7課のように無ければ安全にタガログへ着地
       }
       return q.options; 
     }
@@ -145,11 +151,10 @@
       var q = jftQuizData.questions[currentQuestionIndex];
       if (!q) return;
 
-      // 問題文の流し込み
       var qText = q.questionText[currentLang] || q.questionText['ja'];
       document.getElementById('question-text-box').innerText = "Q" + (currentQuestionIndex + 1) + ". " + qText;
 
-      // 三択ボタンの書き換え（修正されたID配管にガチッと流し込みます）
+      // 🔍 完璧に連動するボタンID配管
       var opts = getDisplayOptions(q);
       for (var i = 0; i < 3; i++) {
         var btn = document.getElementById('option-btn-' + i);
@@ -173,7 +178,7 @@
         var btn = document.createElement('button');
         btn.className = 'kana-btn';
         btn.innerText = kana;
-        btn.onclick = function() { speakJapaneseText(kana); };
+        btn.onclick = function() { speakJapaneseText(kana); }; // 🔊 おすと喋る仕掛け
         box.appendChild(btn);
       });
     }
