@@ -32,8 +32,7 @@
     .audio-trigger-btn { background: var(--accent-red); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; font-size: 24px; cursor: pointer; display: block; margin: 0 auto 16px; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); }
     
     .options-list { display: flex; flex-direction: column; gap: 12px; }
-    .option-btn { width: 100%; background: white; border: 2px solid #cbd5e1; padding: 14px 16px; text-align: left; font-size: 15px; font-weight: 700; border-radius: var(--radius-round); cursor: pointer; transition: all 0.2s ease; color: var(--text-dark); line-height: 1.4; }
-    .option-btn:hover { border-color: var(--primary-blue); background: #f0fdf4; }
+    .option-btn { width: 100%; background: white; border: 2px solid #cbd5e1; padding: 14px 16px; text-align: left; font-size: 15px; font-weight: 700; border-radius: var(--radius-round); cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); color: var(--text-dark); line-height: 1.4; }
     
     .hiragana-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 16px; }
     .kana-btn { background: white; border: 2px solid var(--primary-blue-light); padding: 10px 0; font-size: 18px; font-weight: 700; border-radius: 12px; color: var(--primary-blue); cursor: pointer; text-align: center; }
@@ -55,18 +54,7 @@
     </div>
 
     <div class="lesson-selector-box">
-      <select id="lesson-picker" onchange="changeLesson(this.value)">
-        <option value="1">第1課：ひらがな学習（あ行〜ん）</option>
-        <option value="2">第2課：挨拶と現場サバイバル</option>
-        <option value="3">第3課：すみません、いま何時ですか</option>
-        <option value="4">第4課：これ、おねがいします（物・教室・指示）</option>
-        <option value="5">第5課：いまなんじですか（時間・曜日・場所）</option>
-        <option value="6">第6課：〜をください（食事・注文・個数）</option>
-        <option value="7">第7課：どこにありますか（位置・部屋・空間）</option>
-        <option value="8">第8課：【位置と方向】移動と誘導のサバイバルことば 🗺️</option>
-        <option value="9">第9課：【体調と気分】優しく気遣うサバイバルことば 🩺</option>
-        <option value="10">第10課：【服装と着替え】介助と身だしなみのことば 👕</option>
-      </select>
+      <select id="lesson-picker" onchange="changeLesson(this.value)"></select>
     </div>
 
     <div id="quiz-room">
@@ -89,18 +77,46 @@
   </div>
 
   <script>
-    // ⚙️ 記憶倉庫（localStorage）から状態を復元（リロード対策）
+    // ⚙️ 記憶倉庫から状態を100%復元
     var currentLesson = localStorage.getItem('gabay_current_lesson') || '10';
     var currentLang = localStorage.getItem('gabay_lang') || 'ja';
     var currentQuestionIndex = 0; 
 
     var k2KanaList = ["あ","い","う","え","お","か","き","く","け","こ","さ","し","す","せ","そ","た","ち","つ","て","と","な","に","ぬ","ね","の","は","ひ","ふ","へ","ほ","ま","み","む","め","も","や","ゆ","よ","ら","り","る","れ","ろ","わ","を","ん"];
 
+    var lessonTitles = {
+      1: "第1課：ひらがな学習（あ行〜ん）",
+      2: "第2課：挨拶と現場サバイバル",
+      3: "第3課：すみません、いま何時ですか",
+      4: "第4課：これ、おねがいします（物・教室・指示）",
+      5: "第5課：いまなんじですか（時間・曜日・場所）",
+      6: "第6課：〜をください（食事・注文・個数）",
+      7: "第7課：どこにありますか（位置・部屋・空間）",
+      8: "第8課：【位置と方向】移動と誘導のサバイバルことば 🗺️",
+      9: "第9課：【体調と気分】優しく気遣うサバイバルことば 🩺",
+      10: "第10課：【服装と着替え】介助と身だしなみのことば 👕",
+      11: "第11課の学習部屋", 12: "第12課の学習部屋", 13: "第13課の学習部屋",
+      14: "第14課の学習部屋", 15: "第15課の学習部屋", 16: "第16課の学習部屋",
+      17: "第17課の学習部屋", 18: "第18課の学習部屋", 19: "第19課の学習部屋"
+    };
+
     document.addEventListener('DOMContentLoaded', function() {
-      document.getElementById('lesson-picker').value = currentLesson;
+      buildLessonPickerOptions(); 
       buildHiraganaGrid();
       loadLessonScript(currentLesson);
     });
+
+    function buildLessonPickerOptions() {
+      var picker = document.getElementById('lesson-picker');
+      picker.innerHTML = '';
+      for (var i = 1; i <= 19; i++) {
+        var opt = document.createElement('option');
+        opt.value = i;
+        opt.innerText = lessonTitles[i] || ("第" + i + "課の学習部屋");
+        picker.appendChild(opt);
+      }
+      picker.value = currentLesson;
+    }
 
     function loadLessonScript(lessonNum) {
       var oldScript = document.getElementById('lesson-data-script');
@@ -117,10 +133,10 @@
       currentLesson = val;
       localStorage.setItem('gabay_current_lesson', val);
       currentQuestionIndex = 0; 
+      resetButtonStyles();
       loadLessonScript(val);
     }
 
-    // 💡 辞書機能：進捗を100%キープしたまま言語を切り替える
     function switchLanguage(langCode) {
       currentLang = langCode;
       localStorage.setItem('gabay_lang', langCode); 
@@ -130,7 +146,7 @@
     function getDisplayOptions(q) {
       if (currentLang === 'ja') return q.optionsJa;
       if (currentLang === 'en') {
-        return q.optionsEn ? q.optionsEn : q.options; // 英語データがあれば使い、1〜7課のように無ければ安全にタガログへ着地
+        return q.optionsEn ? q.optionsEn : q.options; 
       }
       return q.options; 
     }
@@ -154,12 +170,16 @@
       var qText = q.questionText[currentLang] || q.questionText['ja'];
       document.getElementById('question-text-box').innerText = "Q" + (currentQuestionIndex + 1) + ". " + qText;
 
-      // 🔍 完璧に連動するボタンID配管
       var opts = getDisplayOptions(q);
       for (var i = 0; i < 3; i++) {
         var btn = document.getElementById('option-btn-' + i);
-        if (btn && opts[i]) {
-          btn.innerText = opts[i];
+        if (btn) {
+          if (opts && opts[i]) {
+            btn.innerText = opts[i];
+            btn.style.display = 'block';
+          } else {
+            btn.style.display = 'none';
+          }
         }
       }
     }
@@ -178,7 +198,7 @@
         var btn = document.createElement('button');
         btn.className = 'kana-btn';
         btn.innerText = kana;
-        btn.onclick = function() { speakJapaneseText(kana); }; // 🔊 おすと喋る仕掛け
+        btn.onclick = function() { speakJapaneseText(kana); }; 
         box.appendChild(btn);
       });
     }
@@ -193,18 +213,60 @@
       }
     }
 
+    // 🛠️ 【アラート完全撤去・ノンストップ自動進行配管】
     function checkAnswer(idx) {
       var q = jftQuizData.questions[currentQuestionIndex];
+      var targetBtn = document.getElementById('option-btn-' + idx);
+      if (!targetBtn) return;
+
+      // 連打防止ロック
+      for (var i = 0; i < 3; i++) {
+        document.getElementById('option-btn-' + i).style.pointerEvents = 'none';
+      }
+
       if (idx === q.correctIndex) {
-        alert("✔️ Correct / Tama!");
-        currentQuestionIndex++;
-        if (currentQuestionIndex >= jftQuizData.questions.length) {
-          alert("🏁 Lesson Cleared! / Tapos na!");
-          currentQuestionIndex = 0;
-        }
-        renderQuestionStructure();
+        // ✔️ 正解：ボタンを優しい緑にして即座にフィードバック
+        targetBtn.style.backgroundColor = '#22c55e';
+        targetBtn.style.borderColor = '#16a34a';
+        targetBtn.style.color = '#ffffff';
+
+        // ⏳ OKボタンを押させず、1秒後に「自動」で次の問題へツルンと遷移！
+        setTimeout(function() {
+          currentQuestionIndex++;
+          if (currentQuestionIndex >= jftQuizData.questions.length) {
+            alert("🏁 Lesson Cleared! / Tapos na! ✨");
+            currentQuestionIndex = 0;
+          }
+          resetButtonStyles();
+          renderQuestionStructure();
+        }, 1000);
+
       } else {
-        alert("❌ Try Again / Isang beses pa!");
+        // ❌ 不正解：間違えたボタンを薄赤にし、他のボタンは即座に選び直せる優しい設計
+        targetBtn.style.backgroundColor = '#fee2e2';
+        targetBtn.style.borderColor = '#ef4444';
+        targetBtn.style.color = '#b91c1c';
+        
+        setTimeout(function() {
+          for (var i = 0; i < 3; i++) {
+            var b = document.getElementById('option-btn-' + i);
+            if (b && b.style.backgroundColor !== 'rgb(254, 226, 226)') {
+              b.style.pointerEvents = 'auto'; // 間違えたボタン以外を再度解放
+            }
+          }
+        }, 300);
+      }
+    }
+
+    function resetButtonStyles() {
+      for (var i = 0; i < 3; i++) {
+        var btn = document.getElementById('option-btn-' + i);
+        if (btn) {
+          btn.style.backgroundColor = '#ffffff';
+          btn.style.borderColor = '#cbd5e1';
+          btn.style.color = '#1e293b';
+          btn.style.pointerEvents = 'auto';
+        }
       }
     }
   </script>
