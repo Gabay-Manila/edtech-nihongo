@@ -1,7 +1,7 @@
 // =========================================================================
-// 🕵️ EdTech Gabay 共通音響工具：完全自立・逆流防御型音声エンジン（js/voice-engine.js）
-// 不具合修正：index.html側の古い関数との混線・ボタン文字のフライング逆流を完全遮断。
-//             どこからどう呼ばれても、問題データの「speechText」だけを100%狙い撃ちします。
+// 🕵️ EdTech Gabay 共通音響工具：完全自立・防壁型音声エンジン（js/voice-engine.js）
+// 仕様：index.htmlは完全固定・無傷キープ。外付けの読み込みだけで裏の音声回路を最新化。
+// 不具合修正：金型側の関数との喧嘩を完全遮断し、フライング逆流を100%防御。
 // =========================================================================
 
 const VoiceEngine = (() => {
@@ -30,7 +30,7 @@ const VoiceEngine = (() => {
   function speak(text) {
     if (!_on || !window.speechSynthesis || !text) return;
 
-    // 丸カッコ・角カッコの中身（ト書きやルビ補足）をすべて自動で綺麗に引き算！
+    // カッコ書きの翻訳補足やルビ用の文字を自動で綺麗に引き算！
     const cleaned = text
       .toString()
       .replace(/（[^）]*）/g, '')   // 全角カッコ消去
@@ -40,13 +40,12 @@ const VoiceEngine = (() => {
 
     if (!cleaned) return;
 
-    // 前の音声をブチッと切って、連打されても被らない設計
     window.speechSynthesis.cancel();
 
     const u = new SpeechSynthesisUtterance(cleaned);
     u.lang  = 'ja-JP';
-    u.rate  = 0.85;  // 棟梁指定：現場の女の子たちが一番聞き取りやすい優しい速度
-    u.pitch = 1.05;  // 少し明るいトーン
+    u.rate  = 0.85;  // 棟梁指定：聞き取りやすい優しい速度
+    u.pitch = 1.05;  // 明るいトーン
     if (_voice) u.voice = _voice;
 
     window.speechSynthesis.speak(u);
@@ -56,33 +55,33 @@ const VoiceEngine = (() => {
 })();
 
 // =========================================================================
-// 🔌 【二重防壁・割り込みハイジャック配管】
-// index.html側の古い speakJapaneseText を上書きラッパーで完全に包みます。
+// 🔌 【金型完全固定：裏口自動マウント配管】
+// index.html側の一番底にある古い speakJapaneseText を外側から優しく包み込み、
+// どこからどんなゴミデータが逆流してきても、問題の「speechText」だけを100%狙い撃ちします。
 // =========================================================================
 (() => {
   VoiceEngine.init();
 
   const injectHijack = () => {
+    // 金型側の関数が立ち上がったのを見計らって、外側から回路を乗っ取ります
     window.speakJapaneseText = function(rawText) {
       
-      // 🛡️ 防壁：もしスピーカーボタン（playQuestionSpeech）から呼ばれた場合、
-      // 引数のrawTextは無視して、現在開いているクイズデータから「speechText」を直接つかみ取ります！
-      // これにより、ボタンの文字（答え）が逆流してくるバグを200%物理的にシャットアウトします。
+      // 🛡️ 防壁：スピーカーボタンが押されたとき、渡されてくる引数は一切信用せず、
+      // 今画面に読み込まれているクイズデータ（jftQuizData）の speechText を直接金庫から引き抜く！
       if (typeof jftQuizData !== 'undefined' && jftQuizData.questions) {
-        // 現在の問題インデックス（currentQuestionIndex）がマザー金型にあれば、そのデータを直接参照
         var currentIndex = typeof currentQuestionIndex !== 'undefined' ? currentQuestionIndex : 0;
         var currentQ = jftQuizData.questions[currentIndex];
         
-        // クイズ部屋の問題データが正しく存在すれば、そちらのspeechTextを最優先！
+        // クイズデータの部屋に正しく音声用テキストがあれば、それを200%最優先！
         if (currentQ && currentQ.speechText) {
           rawText = currentQ.speechText;
         }
       }
       
-      // ひらがな表などの単発タップ（jftQuizDataに属さないもの）は、そのまま渡された文字（「あ」など）を喋らせる
+      // ひらがな表の単発タップ（jftQuizDataに属さない「あ」など）は、そのままその文字を発声
       VoiceEngine.speak(rawText);
     };
-    console.log('[voice-engine.js] 逆流防御・完全直結工事が完了しやした。');
+    console.log('[voice-engine.js] 金型を無傷のまま、逆流防御つき音声エンジンの外付け直結に成功しやした。');
   };
 
   if (document.readyState === 'loading') {
