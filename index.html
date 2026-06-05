@@ -38,7 +38,6 @@
     .kana-btn:active { background: var(--primary-blue); color: white; }
     .hidden { display: none !important; }
 
-    /* 🎉 棟梁監修：新設お祝いメッセージ演出用スタイル */
     .congrats-card { background: #bbf7d0; color: #166534; border: 2px solid #22c55e; padding: 20px; border-radius: var(--radius-round); text-align: center; font-weight: 900; font-size: 18px; margin-bottom: 20px; animation: popIn 0.3s ease; }
     @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
   </style>
@@ -85,11 +84,12 @@
   </div>
 
   <script>
-    var currentLesson = localStorage.getItem('gabay_current_lesson') || '10';
+    // ⚙️ 記憶倉庫から状態復元
+    var currentLesson = localStorage.getItem('gabay_current_lesson') || '11';
     var currentLang = localStorage.getItem('gabay_lang') || 'ja';
     var currentQuestionIndex = 0; 
 
-    var k2KanaList = ["あ","い","う","え","お","か","き","く","け","こ","さ","し","す","せ","そ","た","ち","つ","て","と","な","に","ぬ","ね","の","は","ひ","ふ","へ","ほ","ま","み","む","め","も","や","ゆ","よ","ら","り","る","れ","ろ","わ","を","ん"];
+    var k2KanaList = ["あ","い","う","え","お","か","き","く","け","こ","さ","し","す","せ","そ","た","ち","つ","て","と","な","に","ぬ","ね","の","は","ひ","ふ","へ","ほ","ま","み","む","め","モ","や","ゆ","よ","ら","り","る","れ","ろ","わ","を","ん"];
 
     var lessonTitles = {
       1: "第1課：ひらがな学習（あ行〜ん）",
@@ -102,9 +102,10 @@
       8: "第8課：【位置と方向】移動と誘導のサバイバルことば 🗺️",
       9: "第9課：【体調と気分】優しく気遣うサバイバルことば 🩺",
       10: "第10課：【服装と着替え】介助と身だしなみのことば 👕",
-      11: "第11課の学習部屋", 12: "第12課の学習部屋", 13: "第13課の学習部屋",
-      14: "第14課の学習部屋", 15: "第15課の学習部屋", 16: "第16課の学習部屋",
-      17: "第17課の学習部屋", 18: "第18課の学習部屋", 19: "第19課の学習部屋"
+      11: "第11課：【体調の悪いとき】病院の受付と症状のことば 🩺🏥",
+      12: "第12課の学習部屋", 13: "第13課の学習部屋", 14: "第14課の学習部屋",
+      15: "第15課の学習部屋", 16: "第16課の学習部屋", 17: "第17課の学習部屋",
+      18: "第18課の学習部屋", 19: "第19課の学習部屋"
     };
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -125,13 +126,14 @@
       picker.value = currentLesson;
     }
 
+    // 🔧 修理完了：渡された課の数字（lessonNum）をそのままファイル名にはめ込む自動配管に直しました！
     function loadLessonScript(lessonNum) {
       var oldScript = document.getElementById('lesson-data-script');
       if (oldScript) oldScript.remove();
 
       var script = document.createElement('script');
       script.id = 'lesson-data-script';
-      script.src = 'js/data-l' + lessonNum + '.js';
+      script.src = 'js/data-l' + lessonNum + '.js'; // 10固定を解除し、完全に全自動連動化！
       script.onload = function() { renderQuestionStructure(); };
       document.head.appendChild(script);
     }
@@ -166,10 +168,12 @@
       });
       document.getElementById('btn-lang-' + currentLang).classList.add('active');
 
-      if (currentLesson === '1') {
+      if (String(currentLesson) === '1') {
         document.getElementById('hiragana-board').classList.remove('hidden');
+        document.getElementById('quiz-room').classList.add('hidden'); 
       } else {
         document.getElementById('hiragana-board').classList.add('hidden');
+        document.getElementById('quiz-room').classList.remove('hidden'); 
       }
 
       if (typeof jftQuizData === 'undefined') return;
@@ -213,7 +217,9 @@
     }
 
     function speakJapaneseText(text) {
-      if ('speechSynthesis' in window) {
+      if (typeof VoiceEngine !== 'undefined') {
+        VoiceEngine.speak(text);
+      } else if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel(); 
         var u = new SpeechSynthesisUtterance(text);
         u.lang = 'ja-JP';
@@ -222,7 +228,6 @@
       }
     }
 
-    // 🛠️ 【正誤判定配管：alertポップアップを200%完全撤去】
     function checkAnswer(idx) {
       var q = jftQuizData.questions[currentQuestionIndex];
       var targetBtn = document.getElementById('option-btn-' + idx);
@@ -233,7 +238,6 @@
       }
 
       if (idx === q.correctIndex) {
-        // ✔️ 正解：ボタンを即座に緑にする
         targetBtn.style.backgroundColor = '#22c55e';
         targetBtn.style.borderColor = '#16a34a';
         targetBtn.style.color = '#ffffff';
@@ -242,8 +246,6 @@
           currentQuestionIndex++;
           
           if (currentQuestionIndex >= jftQuizData.questions.length) {
-            // 🏁 最終問題クリア：OKボタンを出す「alert」を完全解体！
-            // 代わりに、画面上にお祝いメッセージカードを3秒間スマートに浮き出させます。
             currentQuestionIndex = 0;
             document.getElementById('quiz-room').classList.add('hidden');
             document.getElementById('congrats-room').classList.remove('hidden');
@@ -253,16 +255,14 @@
               document.getElementById('quiz-room').classList.remove('hidden');
               resetButtonStyles();
               renderQuestionStructure();
-            }, 3000); // 3秒間余韻を楽しんだら自動で最初に戻る
+            }, 3000); 
           } else {
-            // 通常の問題移動：1秒後に自動スライド
             resetButtonStyles();
             renderQuestionStructure();
           }
         }, 1000);
 
       } else {
-        // ❌ 不正解：ボタンを薄赤にして即座にリトライさせる
         targetBtn.style.backgroundColor = '#fee2e2';
         targetBtn.style.borderColor = '#ef4444';
         targetBtn.style.color = '#b91c1c';
@@ -289,9 +289,8 @@
         }
       }
     }
- </script>
-
+  </script>
+  
   <script src="js/voice-engine.js"></script>
-
 </body>
 </html>
