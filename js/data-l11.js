@@ -1,6 +1,6 @@
 // =========================================================================
 // JFT究極・サバイバル対策 A1/A2判定特化版 【第11課：体調の悪いときの表現】
-// 🛠️ 最終検修完了：正解インデックス（correctIndex）を200%完全修正！手戻り完全消滅版
+// 🛠️ 英語バグ完全駆逐：日本語・英語・タガログの「選択肢の並び順」を完全統一！
 // =========================================================================
 
 var jftQuizData = {
@@ -12,8 +12,8 @@ var jftQuizData = {
       speechText: "保険証を見せてください",
       options: ["Paki-sulat ang pangalan mo (名前を書いてください)", "Paki-pakita ang insurance card (保険証を見せてください)", "Paki-hintay sa upuan (椅子で待ってください)"],
       optionsJa: ["なまえをかいてください", "ほけんしょうをみせてください", "いすでまってください"],
-      optionsEn: ["Please show your insurance card (保険証を見せてください)", "Please write your name (名前を書いてください)", "Please wait on the chair (椅子で待ってください)"],
-      correctIndex: 1, // ✨ 2番目の「ほけんしょう」が100%正解！
+      optionsEn: ["Please write your name (名前を書いてください)", "Please show your insurance card (保険証を見せてください)", "Please wait on the chair (椅子で待ってください)"],
+      correctIndex: 1, // ✨ すべての言語で2番目が「ほけんしょう」に完全統一！
       questionText: {
         tl: "Pakinggan ang audio. Ano ang hinihingi ng receptionist sa ospital?",
         en: "Listen to the audio. What is the hospital receptionist asking for?",
@@ -31,8 +31,8 @@ var jftQuizData = {
       speechText: "熱が三十八度あります",
       options: ["May masakit sa akin (体が痛いです)", "Nahihilo po ako (めまいがします)", "May lagnat akong 38 degrees (熱が38度あります)"],
       optionsJa: ["からだがいたいです", "めまいがします", "ねつが38どあります"],
-      optionsEn: ["I have a fever of 38 degrees (熱が38度あります)", "My body hurts (体が痛いです)", "I feel dizzy (めまいがします)"],
-      correctIndex: 2, // ✨ 3番目の「熱が38度 / May lagnat」が100%正解！
+      optionsEn: ["My body hurts (体が痛いです)", "I feel dizzy (めまいがします)", "I have a fever of 38 degrees (熱が38度あります)"],
+      correctIndex: 2, // ✨ すべての言語で3番目が「熱が38度」に完全統一！これで英語も100%緑になります！
       questionText: {
         tl: "Pakinggan ang audio. Ano ang eksaktong temperatura ng pasyente?",
         en: "Listen to the audio. What is the exact temperature of the patient?",
@@ -51,7 +51,7 @@ var jftQuizData = {
       options: ["Masakit ang tiyan ko (お腹が痛いです)", "Masakit ang ulo ko (頭が痛いです)", "Masakit ang ngipin ko (歯が痛いです)"],
       optionsJa: ["おなかがいたいです", "あたまがいたいです", "はがいたいです"],
       optionsEn: ["My stomach hurts (お腹が痛いです)", "I have a headache (頭が痛いです)", "I have a toothache (歯が痛いです)"],
-      correctIndex: 0, // ✨ 1番目の「お腹が痛いです / Masakit ang tiyan ko」が100%正解！
+      correctIndex: 0, // ✨ すべての言語で1番目が「お腹が痛いです」に完全統一！
       questionText: {
         tl: "Basahin ang pangungusap: 「お腹が痛いです」. Aling bahagi ng katawan ang masakit?",
         en: "Read the sentence: 「お腹が痛いです」. Which part of the body is hurting?",
@@ -69,8 +69,8 @@ var jftQuizData = {
       speechText: "昨日から下痢をしています",
       options: ["May ubo ako mula kahapon (昨日から咳が出ます)", "May Lagnat ako mula kahapon (昨日から熱があります)", "May diarya ako mula kahapon (昨日から下痢をしています)"],
       optionsJa: ["きのうからせきがでます", "きのうからねつがあります", "きのうからげりをしています"],
-      optionsEn: ["I have had diarrhea since yesterday (昨日から下痢をしています)", "I have had a cough since yesterday (昨日から咳が出ます)", "I have had a fever since yesterday (昨日から熱があります)"],
-      correctIndex: 2, // ✨ 3番目の「下痢をしています / May diarya」が100%正解！
+      optionsEn: ["I have a cough since yesterday (昨日から咳が出ます)", "I have a fever since yesterday (昨日から熱があります)", "I have had diarrhea since yesterday (昨日から下痢をしています)"],
+      correctIndex: 2, // ✨ すべての言語で3番目が「下痢をしています」に完全統一！
       questionText: {
         tl: "Basahin ang pangungusap: 「昨日から下痢をしています」. Aling sakit ito?",
         en: "Read the sentence: 「昨日から下痢をしています」. What is the condition?",
@@ -89,7 +89,7 @@ var jftQuizData = {
       options: ["Magre-reseta ako ng gamot (お薬をお出ししますね)", "Kukunin ko ang iyong timbang (体重を測りますね)", "Uuwi na tayo sa bahay (家に帰りましょうね)"],
       optionsJa: ["おくすりをおだししますね", "たいじゅうをはかりますね", "いえにかえりましょうね"],
       optionsEn: ["We will prescribe your medicine (お薬をお出ししますね)", "We will check your weight (体重を測りますね)", "Let's go back home (家に帰りましょうね)"],
-      correctIndex: 0, // ✨ 1番目の「お薬をお出ししますね / Magre-reseta」が100%正解！
+      correctIndex: 0, // ✨ すべての言語で1番目が「お薬をお出ししますね」に完全統一！
       questionText: {
         tl: "Ano ang sasabihin ng doktor o pharmacist sa dulo ng pagkonsulta: 「お薬をお出ししますね」?",
         en: "What does the doctor or pharmacist say at the end of the consultation: 「お薬をお出ししますね」?",
