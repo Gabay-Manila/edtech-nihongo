@@ -5,292 +5,237 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EdTech Gabay - NIHONGO サバイバル</title>
   <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
-  
-  <style>
-    /* 🎨 棟梁監修：柔らか丸ゴシック・青ベースUI */
-    :root {
-      --primary-blue: #1e3a8a;
-      --primary-blue-light: #eff6ff;
-      --accent-red: #ef4444;
-      --text-dark: #1e293b;
-      --radius-round: 20px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Zen Maru Gothic', sans-serif; }
-    body { background-color: #f8fafc; color: var(--text-dark); padding: 16px; display: flex; flex-direction: column; align-items: center; }
-    .app-container { width: 100%; max-width: 500px; background: white; border-radius: var(--radius-round); box-shadow: 0 10px 25px rgba(30, 58, 138, 0.05); padding: 20px; border: 2px solid var(--primary-blue-light); position: relative; }
-    .logo-area { width: 100%; display: flex; justify-content: center; margin-bottom: 16px; }
-    
-    .lang-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
-    .lang-btn { border: 2px solid var(--primary-blue); background: white; color: var(--primary-blue); padding: 10px 4px; font-size: 14px; font-weight: 700; border-radius: var(--radius-round); cursor: pointer; transition: all 0.2s ease; text-align: center; }
-    .lang-btn.active { background: var(--primary-blue); color: white; }
-    
-    .lesson-selector-box { margin-bottom: 20px; }
-    select { width: 100%; padding: 12px; font-size: 16px; font-weight: 700; color: var(--primary-blue); border: 2px solid var(--primary-blue); border-radius: var(--radius-round); background-color: white; }
-    .quiz-card { background: var(--primary-blue-light); border-radius: var(--radius-round); padding: 20px; margin-bottom: 20px; border: 1px solid #dbeafe; }
-    .question-title { font-size: 17px; font-weight: 900; color: var(--primary-blue); margin-bottom: 12px; line-height: 1.5; }
-    .audio-trigger-btn { background: var(--accent-red); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; font-size: 24px; cursor: pointer; display: block; margin: 0 auto 16px; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); }
-    
-    .options-list { display: flex; flex-direction: column; gap: 12px; }
-    .option-btn { width: 100%; background: white; border: 2px solid #cbd5e1; padding: 14px 16px; text-align: left; font-size: 15px; font-weight: 700; border-radius: var(--radius-round); cursor: pointer; transition: all 0.2s ease; color: var(--text-dark); line-height: 1.4; }
-    
-    .hiragana-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 16px; }
-    .kana-btn { background: white; border: 2px solid var(--primary-blue-light); padding: 10px 0; font-size: 18px; font-weight: 700; border-radius: 12px; color: var(--primary-blue); cursor: pointer; text-align: center; }
-    .kana-btn:active { background: var(--primary-blue); color: white; }
-    .hidden { display: none !important; }
 
-    .congrats-card { background: #bbf7d0; color: #166534; border: 2px solid #22c55e; padding: 20px; border-radius: var(--radius-round); text-align: center; font-weight: 900; font-size: 18px; margin-bottom: 20px; animation: popIn 0.3s ease; }
-    @keyframes popIn { 0% { transform: scale(0.9); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+  <style>
+    /* ============================================================
+       EdTech Gabay - UIスタイル定義
+       ロジック・データは一切記載しない。見た目だけ。
+       ============================================================ */
+    :root {
+      --primary-blue:       #1e3a8a;
+      --primary-blue-light: #eff6ff;
+      --accent-red:         #ef4444;
+      --text-dark:          #1e293b;
+      --radius-round:       20px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Zen Maru Gothic', sans-serif; }
+
+    body {
+      background-color: #f8fafc;
+      color: var(--text-dark);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 500px;
+      background: white;
+      border-radius: var(--radius-round);
+      box-shadow: 0 10px 25px rgba(30, 58, 138, 0.05);
+      padding: 20px;
+      border: 2px solid var(--primary-blue-light);
+    }
+
+    /* ロゴ */
+    .logo-area {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    /* 言語セレクター */
+    .lang-selector {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+    .lang-btn {
+      border: 2px solid var(--primary-blue);
+      background: white;
+      color: var(--primary-blue);
+      padding: 10px 4px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: var(--radius-round);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+    .lang-btn.active {
+      background: var(--primary-blue);
+      color: white;
+    }
+
+    /* レッスンピッカー */
+    .lesson-selector-box { margin-bottom: 20px; }
+    select {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--primary-blue);
+      border: 2px solid var(--primary-blue);
+      border-radius: var(--radius-round);
+      background-color: white;
+    }
+
+    /* クイズカード */
+    .quiz-card {
+      background: var(--primary-blue-light);
+      border-radius: var(--radius-round);
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #dbeafe;
+    }
+    .question-title {
+      font-size: 17px;
+      font-weight: 900;
+      color: var(--primary-blue);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .audio-trigger-btn {
+      background: var(--accent-red);
+      color: white;
+      border: none;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      display: block;
+      margin: 0 auto 16px;
+      box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3);
+    }
+
+    /* 選択肢ボタン */
+    .options-list { display: flex; flex-direction: column; gap: 12px; }
+    .option-btn {
+      width: 100%;
+      background: white;
+      border: 2px solid #cbd5e1;
+      padding: 14px 16px;
+      text-align: left;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: var(--radius-round);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--text-dark);
+      line-height: 1.4;
+    }
+
+    /* ひらがなグリッド */
+    .hiragana-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .kana-btn {
+      background: white;
+      border: 2px solid var(--primary-blue-light);
+      padding: 10px 0;
+      font-size: 18px;
+      font-weight: 700;
+      border-radius: 12px;
+      color: var(--primary-blue);
+      cursor: pointer;
+      text-align: center;
+    }
+    .kana-btn:active { background: var(--primary-blue); color: white; }
+
+    /* クリア演出 */
+    .congrats-card {
+      background: #bbf7d0;
+      color: #166534;
+      border: 2px solid #22c55e;
+      padding: 20px;
+      border-radius: var(--radius-round);
+      text-align: center;
+      font-weight: 900;
+      font-size: 18px;
+      margin-bottom: 20px;
+      animation: popIn 0.3s ease;
+    }
+    @keyframes popIn {
+      0%   { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1);   opacity: 1; }
+    }
+
+    .hidden { display: none !important; }
   </style>
 </head>
 <body>
 
   <div class="app-container">
+
+    <!-- ロゴ -->
     <div class="logo-area">
       <img src="nihongo-logo.svg" alt="EdTech Gabay Logo" style="width: 100%; max-width: 320px;">
     </div>
 
+    <!-- 言語セレクター（クリックは app.js の switchLanguage() へ） -->
     <div class="lang-selector">
       <button class="lang-btn" id="btn-lang-ja" onclick="switchLanguage('ja')">日本語</button>
       <button class="lang-btn" id="btn-lang-en" onclick="switchLanguage('en')">English</button>
       <button class="lang-btn" id="btn-lang-tl" onclick="switchLanguage('tl')">Tagalog</button>
     </div>
 
+    <!-- レッスンピッカー（選択肢は lesson-registry.js から動的生成） -->
     <div class="lesson-selector-box">
       <select id="lesson-picker" onchange="changeLesson(this.value)"></select>
     </div>
 
+    <!-- クリア演出 -->
     <div id="congrats-room" class="congrats-card hidden">
       🏁 Lesson Cleared! / Tapos na! ✨<br>
-      <span style="font-size: 14px; font-weight: 500; display: block; margin-top: 8px;">つぎの もんだいに すすむよ... 🚀</span>
+      <span style="font-size:14px; font-weight:500; display:block; margin-top:8px;">
+        つぎの もんだいに すすむよ... 🚀
+      </span>
     </div>
 
+    <!-- クイズルーム -->
     <div id="quiz-room">
       <div class="quiz-card">
         <div class="question-title" id="question-text-box">Loading...</div>
         <button class="audio-trigger-btn" id="audio-btn" onclick="playQuestionSpeech()">🔊</button>
-        
+
         <div class="options-list">
-          <button class="option-btn" id="option-btn-0" onclick="checkAnswer(0)">選択肢 1</button>
-          <button class="option-btn" id="option-btn-1" onclick="checkAnswer(1)">選択肢 2</button>
-          <button class="option-btn" id="option-btn-2" onclick="checkAnswer(2)">選択肢 3</button>
+          <button class="option-btn" id="option-btn-0" onclick="checkAnswer(0)"></button>
+          <button class="option-btn" id="option-btn-1" onclick="checkAnswer(1)"></button>
+          <button class="option-btn" id="option-btn-2" onclick="checkAnswer(2)"></button>
         </div>
       </div>
     </div>
 
+    <!-- ひらがなボード（第1課のみ表示） -->
     <div id="hiragana-board" class="hidden">
-      <div class="question-title" style="text-align: center; margin-top: 10px;">ひらがな表（おすと おとが でるよ！）</div>
+      <div class="question-title" style="text-align:center; margin-top:10px;">
+        ひらがな表（おすと おとが でるよ！）
+      </div>
       <div class="hiragana-grid" id="kana-grid-box"></div>
     </div>
-  </div>
 
-  <script>
-    // ⚙️ 記憶倉庫から状態復元
-    var currentLesson = localStorage.getItem('gabay_current_lesson') || '11';
-    var currentLang = localStorage.getItem('gabay_lang') || 'ja';
-    var currentQuestionIndex = 0; 
+  </div><!-- /.app-container -->
 
-    var k2KanaList = ["あ","い","う","え","お","か","き","く","け","こ","さ","し","す","せ","そ","た","ち","つ","て","と","な","に","ぬ","ね","の","は","ひ","ふ","へ","ほ","ま","み","む","め","モ","や","ゆ","よ","ら","り","る","れ","ろ","わ","を","ん"];
-
-    var lessonTitles = {
-      1: "第1課：ひらがな学習（あ行〜ん）",
-      2: "第2課：挨拶と現場サバイバル",
-      3: "第3課：すみません、いま何時ですか",
-      4: "第4課：これ、おねがいします（物・教室・指示）",
-      5: "第5課：いまなんじですか（時間・曜日・場所）",
-      6: "第6課：〜をください（食事・注文・個数）",
-      7: "第7課：どこにありますか（位置・部屋・空間）",
-      8: "第8課：【位置と方向】移動と誘導のサバイバルことば 🗺️",
-      9: "第9課：【体調と気分】優しく気遣うサバイバルことば 🩺",
-      10: "第10課：【服装と着替え】介助と身だしなみのことば 👕",
-      11: "第11課：【体調の悪いとき】病院の受付と症状のことば 🩺🏥",
-      12: "第12課の学習部屋", 13: "第13課の学習部屋", 14: "第14課の学習部屋",
-      15: "第15課の学習部屋", 16: "第16課の学習部屋", 17: "第17課の学習部屋",
-      18: "第18課の学習部屋", 19: "第19課の学習部屋"
-    };
-
-    document.addEventListener('DOMContentLoaded', function() {
-      buildLessonPickerOptions(); 
-      buildHiraganaGrid();
-      loadLessonScript(currentLesson);
-    });
-
-    function buildLessonPickerOptions() {
-      var picker = document.getElementById('lesson-picker');
-      picker.innerHTML = '';
-      for (var i = 1; i <= 19; i++) {
-        var opt = document.createElement('option');
-        opt.value = i;
-        opt.innerText = lessonTitles[i] || ("第" + i + "課の学習部屋");
-        picker.appendChild(opt);
-      }
-      picker.value = currentLesson;
-    }
-
-    // 🔧 修理完了：渡された課の数字（lessonNum）をそのままファイル名にはめ込む自動配管に直しました！
-    function loadLessonScript(lessonNum) {
-      var oldScript = document.getElementById('lesson-data-script');
-      if (oldScript) oldScript.remove();
-
-      var script = document.createElement('script');
-      script.id = 'lesson-data-script';
-      script.src = 'js/data-l' + lessonNum + '.js'; // 10固定を解除し、完全に全自動連動化！
-      script.onload = function() { renderQuestionStructure(); };
-      document.head.appendChild(script);
-    }
-
-    function changeLesson(val) {
-      currentLesson = val;
-      localStorage.setItem('gabay_current_lesson', val);
-      currentQuestionIndex = 0; 
-      document.getElementById('congrats-room').classList.add('hidden');
-      document.getElementById('quiz-room').classList.remove('hidden');
-      resetButtonStyles();
-      loadLessonScript(val);
-    }
-
-    function switchLanguage(langCode) {
-      currentLang = langCode;
-      localStorage.setItem('gabay_lang', langCode); 
-      renderQuestionStructure(); 
-    }
-
-    function getDisplayOptions(q) {
-      if (currentLang === 'ja') return q.optionsJa;
-      if (currentLang === 'en') {
-        return q.optionsEn ? q.optionsEn : q.options; 
-      }
-      return q.options; 
-    }
-
-    function renderQuestionStructure() {
-      ['ja', 'en', 'tl'].forEach(function(l) {
-        document.getElementById('btn-lang-' + l).classList.remove('active');
-      });
-      document.getElementById('btn-lang-' + currentLang).classList.add('active');
-
-      if (String(currentLesson) === '1') {
-        document.getElementById('hiragana-board').classList.remove('hidden');
-        document.getElementById('quiz-room').classList.add('hidden'); 
-      } else {
-        document.getElementById('hiragana-board').classList.add('hidden');
-        document.getElementById('quiz-room').classList.remove('hidden'); 
-      }
-
-      if (typeof jftQuizData === 'undefined') return;
-      var q = jftQuizData.questions[currentQuestionIndex];
-      if (!q) return;
-
-      var qText = q.questionText[currentLang] || q.questionText['ja'];
-      document.getElementById('question-text-box').innerText = "Q" + (currentQuestionIndex + 1) + ". " + qText;
-
-      var opts = getDisplayOptions(q);
-      for (var i = 0; i < 3; i++) {
-        var btn = document.getElementById('option-btn-' + i);
-        if (btn) {
-          if (opts && opts[i]) {
-            btn.innerText = opts[i];
-            btn.style.display = 'block';
-          } else {
-            btn.style.display = 'none';
-          }
-        }
-      }
-    }
-
-    function playQuestionSpeech() {
-      if (typeof jftQuizData === 'undefined') return;
-      var q = jftQuizData.questions[currentQuestionIndex];
-      if (!q || !q.speechText) return;
-      speakJapaneseText(q.speechText);
-    }
-
-    function buildHiraganaGrid() {
-      var box = document.getElementById('kana-grid-box');
-      box.innerHTML = '';
-      k2KanaList.forEach(function(kana) {
-        var btn = document.createElement('button');
-        btn.className = 'kana-btn';
-        btn.innerText = kana;
-        btn.onclick = function() { speakJapaneseText(kana); }; 
-        box.appendChild(btn);
-      });
-    }
-
-    function speakJapaneseText(text) {
-      if (typeof VoiceEngine !== 'undefined') {
-        VoiceEngine.speak(text);
-      } else if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel(); 
-        var u = new SpeechSynthesisUtterance(text);
-        u.lang = 'ja-JP';
-        u.rate = 0.85; 
-        window.speechSynthesis.speak(u);
-      }
-    }
-
-    function checkAnswer(idx) {
-      var q = jftQuizData.questions[currentQuestionIndex];
-      var targetBtn = document.getElementById('option-btn-' + idx);
-      if (!targetBtn) return;
-
-      for (var i = 0; i < 3; i++) {
-        document.getElementById('option-btn-' + i).style.pointerEvents = 'none';
-      }
-
-      if (idx === q.correctIndex) {
-        targetBtn.style.backgroundColor = '#22c55e';
-        targetBtn.style.borderColor = '#16a34a';
-        targetBtn.style.color = '#ffffff';
-
-        setTimeout(function() {
-          currentQuestionIndex++;
-          
-          if (currentQuestionIndex >= jftQuizData.questions.length) {
-            currentQuestionIndex = 0;
-            document.getElementById('quiz-room').classList.add('hidden');
-            document.getElementById('congrats-room').classList.remove('hidden');
-            
-            setTimeout(function() {
-              document.getElementById('congrats-room').classList.add('hidden');
-              document.getElementById('quiz-room').classList.remove('hidden');
-              resetButtonStyles();
-              renderQuestionStructure();
-            }, 3000); 
-          } else {
-            resetButtonStyles();
-            renderQuestionStructure();
-          }
-        }, 1000);
-
-      } else {
-        targetBtn.style.backgroundColor = '#fee2e2';
-        targetBtn.style.borderColor = '#ef4444';
-        targetBtn.style.color = '#b91c1c';
-        
-        setTimeout(function() {
-          for (var i = 0; i < 3; i++) {
-            var b = document.getElementById('option-btn-' + i);
-            if (b && b.style.backgroundColor !== 'rgb(254, 226, 226)') {
-              b.style.pointerEvents = 'auto';
-            }
-          }
-        }, 300);
-      }
-    }
-
-    function resetButtonStyles() {
-      for (var i = 0; i < 3; i++) {
-        var btn = document.getElementById('option-btn-' + i);
-        if (btn) {
-          btn.style.backgroundColor = '#ffffff';
-          btn.style.borderColor = '#cbd5e1';
-          btn.style.color = '#1e293b';
-          btn.style.pointerEvents = 'auto';
-        }
-      }
-    }
-  </script>
-  
+  <!--
+    ============================================================
+    スクリプト読み込み順序（順番を変えないこと）
+    1. lesson-registry.js  → レッスン一覧定義（追加時はここだけ）
+    2. voice-engine.js     → 音声エンジン
+    3. app.js              → アプリ本体ロジック
+    ============================================================
+  -->
+  <script src="js/lesson-registry.js"></script>
   <script src="js/voice-engine.js"></script>
+  <script src="js/app.js"></script>
+
 </body>
 </html>
