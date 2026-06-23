@@ -49,6 +49,26 @@ function tone(freq, ms, type){
 function playCorrect(){ tone(437, 220, "sine"); }
 function playIncorrect(){ tone(218.5, 260, "sine"); }
 
+/* ---------- auto-read question audio (Speech Synthesis API) ---------- */
+function cancelSpeech(){
+  try{ window.speechSynthesis && window.speechSynthesis.cancel(); }catch(e){ /* unsupported */ }
+}
+function speakUtterance(text){
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "ja-JP";
+  u.rate = 0.85;
+  window.speechSynthesis.speak(u);
+}
+// Auto-plays prompt → 1ばん → 2ばん → 3ばん → 4ばん, queued back-to-back, no buttons.
+function speakQuestion(q){
+  cancelSpeech(); // stop anything left over from the previous question first
+  try{
+    if(!window.speechSynthesis) return;
+    speakUtterance(q.prompt);
+    q.choices.forEach((c,i)=> speakUtterance(`${i+1}ばん、${c.jp}`));
+  }catch(e){ /* speech synthesis unsupported or blocked — fail silently */ }
+}
+
 /* ---------- helpers ---------- */
 function shuffle(arr){
   const a = arr.slice();
@@ -183,7 +203,10 @@ function renderQuiz(){
     <button class="next-btn" id="nextBtn" disabled>Next</button>
   `;
 
-  document.getElementById("backBtn").addEventListener("click", ()=>{ state.screen="home"; renderHome(); });
+  // Auto-fire the moment this screen is drawn — no tap required.
+  speakQuestion(q);
+
+  document.getElementById("backBtn").addEventListener("click", ()=>{ cancelSpeech(); state.screen="home"; renderHome(); });
 
   const aiBtn = document.getElementById("aiBtn");
   const aiPanel = document.getElementById("aiPanel");
@@ -200,6 +223,7 @@ function renderQuiz(){
   choiceButtons.forEach(btn=>{
     btn.addEventListener("click", ()=>{
       if(state.answered) return;
+      cancelSpeech();
       state.answered = true;
       const idx = Number(btn.dataset.idx);
       const picked = q.choices[idx];
@@ -230,6 +254,7 @@ function renderQuiz(){
   });
 
   document.getElementById("nextBtn").addEventListener("click", ()=>{
+    cancelSpeech();
     state.index++;
     state.answered = false;
     if(state.index >= state.queue.length){
@@ -290,8 +315,8 @@ function renderResult(){
     </div>
   `;
 
-  document.getElementById("backBtn").addEventListener("click", ()=>{ state.screen="home"; renderHome(); });
-  document.getElementById("homeBtn").addEventListener("click", ()=>{ state.screen="home"; renderHome(); });
+  document.getElementById("backBtn").addEventListener("click", ()=>{ cancelSpeech(); state.screen="home"; renderHome(); });
+  document.getElementById("homeBtn").addEventListener("click", ()=>{ cancelSpeech(); state.screen="home"; renderHome(); });
   document.getElementById("retryAllBtn").addEventListener("click", ()=> startBlock(state.blockId));
   if(showRetryWeak){
     document.getElementById("retryWeakBtn").addEventListener("click", ()=>{
