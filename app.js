@@ -139,8 +139,21 @@ function renderHome(){
     <footer>
       Yoshida EdTech Works / EdTech Gabay — built for Filipino learners of survival Japanese.<br>
       Progress is saved on this device only. No personal data is sent to any server.
+      <div style="margin-top:10px;">
+        <button id="complianceToggle" style="background:none;border:none;color:var(--ink-soft);font-size:11.5px;text-decoration:underline;cursor:pointer;padding:0;">Compliance &amp; Info</button>
+      </div>
+      <div id="compliancePanel" style="display:none;text-align:left;max-width:560px;margin:10px auto 0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;font-size:11.5px;color:var(--ink-soft);line-height:1.6;">
+        Operator: Yoshida EdTech Works / Contact: edtechgabay@gmail.com<br><br>
+        This app has no features that collect personal information such as your name or email address (no account registration or login). We use Google Analytics (GA4) for access analysis, which anonymously collects usage data such as browsing behavior, approximate location, and device type. Collected data is used only to improve this app and is never sold to third parties. For questions about data handling or deletion requests, please contact us at the email address above.<br><br>
+        Last updated: June 24, 2026 / Yoshida EdTech Works / Manila &amp; Japan
+      </div>
     </footer>
   `;
+
+  document.getElementById("complianceToggle").addEventListener("click", ()=>{
+    const panel = document.getElementById("compliancePanel");
+    panel.style.display = panel.style.display === "none" ? "block" : "none";
+  });
 
   app.querySelectorAll(".island").forEach(el=>{
     el.addEventListener("click", ()=> startBlock(el.dataset.block));
