@@ -59,13 +59,14 @@ function speakUtterance(text){
   u.rate = 0.85;
   window.speechSynthesis.speak(u);
 }
-// Auto-plays prompt → 1ばん → 2ばん → 3ばん → 4ばん, queued back-to-back, no buttons.
+// Auto-plays prompt → いち → に → さん → よん, queued back-to-back, no buttons.
+const COUNT_JP = ["いち","に","さん","よん"];
 function speakQuestion(q){
   cancelSpeech(); // stop anything left over from the previous question first
   try{
     if(!window.speechSynthesis) return;
     speakUtterance(q.prompt);
-    q.choices.forEach((c,i)=> speakUtterance(`${i+1}ばん、${c.jp}`));
+    q.choices.forEach((c,i)=> speakUtterance(`${COUNT_JP[i] || (i+1)}、${c.jp}`));
   }catch(e){ /* speech synthesis unsupported or blocked — fail silently */ }
 }
 
