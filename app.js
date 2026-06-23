@@ -17,12 +17,29 @@ function loadProgress(){
   try{ return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
   catch(e){ return {}; }
 }
-function saveProgress(blockId, score, total, weakIds){
+function saveProgress(blockId, score, total, weakIds, reviewMode){
   const p = loadProgress();
-  const prev = p[blockId] || {bestScore:0, bestTotal:total, attempts:0};
+  const prev = p[blockId] || {bestScore:0, bestTotal:0, attempts:0};
+  // Best score/total are only updated together, from full (non-review) runs,
+  // and only when this run's ratio is at least as good as the stored best.
+  // This avoids mixing a full-run score with a smaller review-run total.
+  let bestScore = prev.bestScore || 0;
+  let bestTotal = prev.bestTotal || 0;
+  if(bestTotal > 0 && bestScore > bestTotal){
+    // Corrupted record from an earlier bug (e.g. "5/3") — reset before comparing.
+    bestScore = 0; bestTotal = 0;
+  }
+  if(!reviewMode){
+    const prevRatio = bestTotal > 0 ? (bestScore / bestTotal) : -1;
+    const newRatio = total > 0 ? (score / total) : 0;
+    if(newRatio >= prevRatio){
+      bestScore = score;
+      bestTotal = total;
+    }
+  }
   p[blockId] = {
-    bestScore: Math.max(prev.bestScore||0, score),
-    bestTotal: total,
+    bestScore: bestScore,
+    bestTotal: bestTotal,
     attempts: (prev.attempts||0) + 1,
     lastWeakIds: weakIds,
     lastAt: new Date().toISOString()
@@ -111,7 +128,8 @@ function renderHome(){
   const progress = loadProgress();
   const islands = BLOCKS.map(b=>{
     const p = progress[b.id];
-    const bestLine = p ? `Best: ${p.bestScore}/${p.bestTotal}` : "Not started yet";
+    const hasBest = p && p.bestTotal > 0 && p.bestScore <= p.bestTotal;
+    const bestLine = hasBest ? `Best: ${p.bestScore}/${p.bestTotal}` : "Not started yet";
     return `
       <button class="island" data-block="${b.id}">
         <span class="lvl">${b.level}</span>
@@ -120,7 +138,7 @@ function renderHome(){
         <div style="font-size:13px;color:var(--ink-soft)">${b.blurb}</div>
         <div class="meta">
           <span>${b.questions.length} questions</span>
-          <span class="${p?'best':''}">${bestLine}</span>
+          <span class="${hasBest?'best':''}">${bestLine}</span>
         </div>
       </button>`;
   }).join("");
@@ -282,7 +300,7 @@ function renderQuiz(){
 function renderResult(){
   const block = getBlock(state.blockId);
   const total = state.queue.length;
-  saveProgress(state.blockId, state.score, total, state.wrong.map(w=>w.id));
+  saveProgress(state.blockId, state.score, total, state.wrong.map(w=>w.id), state.reviewMode);
 
   track("quiz_complete", {
     block_id: state.blockId,
