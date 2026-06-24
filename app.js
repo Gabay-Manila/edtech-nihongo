@@ -13,13 +13,19 @@ function track(eventName, params){
 
 /* ---------- storage ---------- */
 const STORE_KEY = "edtechnihongo_progress_v2";
+function progressKey(blockId, setId){ return `${blockId}::${setId}`; }
 function loadProgress(){
   try{ return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
   catch(e){ return {}; }
 }
-function saveProgress(blockId, score, total, weakIds, reviewMode){
+function getSetProgress(blockId, setId){
   const p = loadProgress();
-  const prev = p[blockId] || {bestScore:0, bestTotal:0, attempts:0};
+  return p[progressKey(blockId, setId)] || null;
+}
+function saveProgress(blockId, setId, score, total, weakIds, reviewMode){
+  const p = loadProgress();
+  const key = progressKey(blockId, setId);
+  const prev = p[key] || {bestScore:0, bestTotal:0, attempts:0};
   // Best score/total are only updated together, from full (non-review) runs,
   // and only when this run's ratio is at least as good as the stored best.
   // This avoids mixing a full-run score with a smaller review-run total.
@@ -37,7 +43,7 @@ function saveProgress(blockId, score, total, weakIds, reviewMode){
       bestTotal = total;
     }
   }
-  p[blockId] = {
+  p[key] = {
     bestScore: bestScore,
     bestTotal: bestTotal,
     attempts: (prev.attempts||0) + 1,
@@ -97,6 +103,7 @@ function shuffle(arr){
   return a;
 }
 function getBlock(id){ return BLOCKS.find(b=>b.id===id); }
+function getSet(block, setId){ return block.sets.find(s=>s.id===setId); }
 function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 }
@@ -105,6 +112,7 @@ function escapeHtml(s){
 let state = {
   screen:"home",
   blockId:null,
+  setId:null,
   queue:[],
   index:0,
   score:0,
@@ -125,11 +133,9 @@ function waveSvg(){
 
 function renderHome(){
   track("view_home", {});
-  const progress = loadProgress();
   const islands = BLOCKS.map(b=>{
-    const p = progress[b.id];
-    const hasBest = p && p.bestTotal > 0 && p.bestScore <= p.bestTotal;
-    const bestLine = hasBest ? `Best: ${p.bestScore}/${p.bestTotal}` : "Not started yet";
+    const totalQ = b.sets.reduce((sum,s)=> sum + s.questions.length, 0);
+    const setCount = b.sets.length;
     return `
       <button class="island" data-block="${b.id}">
         <span class="lvl">${b.level}</span>
@@ -137,8 +143,8 @@ function renderHome(){
         <div class="jp-label">${b.title}</div>
         <div style="font-size:13px;color:var(--ink-soft)">${b.blurb}</div>
         <div class="meta">
-          <span>${b.questions.length} questions</span>
-          <span class="${hasBest?'best':''}">${bestLine}</span>
+          <span>${setCount} set${setCount>1?'s':''} · ${totalQ} questions</span>
+          <span></span>
         </div>
       </button>`;
   }).join("");
@@ -174,21 +180,63 @@ function renderHome(){
   });
 
   app.querySelectorAll(".island").forEach(el=>{
-    el.addEventListener("click", ()=> startBlock(el.dataset.block));
+    el.addEventListener("click", ()=> renderSets(el.dataset.block));
   });
 }
 
-function startBlock(blockId, reviewIds){
+function renderSets(blockId){
+  track("view_sets", {block_id: blockId});
   const block = getBlock(blockId);
-  let pool = block.questions;
+  state.screen = "sets";
+  state.blockId = blockId;
+
+  const setCards = block.sets.map(s=>{
+    const p = getSetProgress(blockId, s.id);
+    const hasBest = p && p.bestTotal > 0 && p.bestScore <= p.bestTotal;
+    const bestLine = hasBest ? `Best: ${p.bestScore}/${p.bestTotal}` : "Not started yet";
+    return `
+      <button class="island" data-set="${s.id}" style="text-align:left;">
+        <span class="lvl">${block.level}</span>
+        <h2 style="font-size:18px;margin:0 0 4px;">${s.label}</h2>
+        <div class="meta">
+          <span>${s.questions.length} questions</span>
+          <span class="${hasBest?'best':''}">${bestLine}</span>
+        </div>
+      </button>`;
+  }).join("");
+
+  app.innerHTML = `
+    <div class="quiz-top">
+      <button class="back-link" id="backBtn">&larr; Islands</button>
+      <div class="tonefreq">437Hz</div>
+    </div>
+    ${waveSvg()}
+    <div class="hero">
+      <h1 class="jp" style="font-size:22px;">${block.jp}</h1>
+      <p>${block.title} · ${block.level} — choose a set to start.</p>
+    </div>
+    <div class="islands">${setCards}</div>
+  `;
+
+  document.getElementById("backBtn").addEventListener("click", ()=>{ state.screen="home"; renderHome(); });
+  app.querySelectorAll(".island").forEach(el=>{
+    el.addEventListener("click", ()=> startBlock(blockId, el.dataset.set));
+  });
+}
+
+function startBlock(blockId, setId, reviewIds){
+  const block = getBlock(blockId);
+  const set = getSet(block, setId);
+  let pool = set.questions;
   if(reviewIds && reviewIds.length){
-    pool = block.questions.filter(q=> reviewIds.includes(q.id));
+    pool = set.questions.filter(q=> reviewIds.includes(q.id));
     state.reviewMode = true;
   } else {
     state.reviewMode = false;
   }
   state.screen = "quiz";
   state.blockId = blockId;
+  state.setId = setId;
   state.queue = shuffle(pool);
   state.index = 0;
   state.score = 0;
@@ -196,12 +244,13 @@ function startBlock(blockId, reviewIds){
   state.answered = false;
   state.hintOpen = false;
 
-  track("block_start", {block_id: blockId, review_mode: state.reviewMode, question_count: pool.length});
+  track("block_start", {block_id: blockId, set_id: setId, review_mode: state.reviewMode, question_count: pool.length});
   renderQuiz();
 }
 
 function renderQuiz(){
   const block = getBlock(state.blockId);
+  const set = getSet(block, state.setId);
   const q = state.queue[state.index];
   const pct = Math.round((state.index/state.queue.length)*100);
 
@@ -211,7 +260,7 @@ function renderQuiz(){
 
   app.innerHTML = `
     <div class="quiz-top">
-      <button class="back-link" id="backBtn">&larr; ${block.title}</button>
+      <button class="back-link" id="backBtn">&larr; ${block.title} · ${set.label}</button>
       <div class="tonefreq">${state.index+1} / ${state.queue.length}</div>
     </div>
     <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
@@ -238,8 +287,7 @@ function renderQuiz(){
   // Auto-fire the moment this screen is drawn — no tap required.
   speakQuestion(q);
 
-  document.getElementById("backBtn").addEventListener("click", ()=>{ cancelSpeech(); state.screen="home"; renderHome(); });
-
+  document.getElementById("backBtn").addEventListener("click", ()=>{ cancelSpeech(); renderSets(state.blockId); });
   const aiBtn = document.getElementById("aiBtn");
   const aiPanel = document.getElementById("aiPanel");
   let aiOpenedLogged = false;
@@ -277,6 +325,7 @@ function renderQuiz(){
       }
       track("answer_submitted", {
         block_id: state.blockId,
+        set_id: state.setId,
         question_id: q.id,
         correct: !!picked.correct,
         review_mode: state.reviewMode
@@ -299,11 +348,13 @@ function renderQuiz(){
 
 function renderResult(){
   const block = getBlock(state.blockId);
+  const set = getSet(block, state.setId);
   const total = state.queue.length;
-  saveProgress(state.blockId, state.score, total, state.wrong.map(w=>w.id), state.reviewMode);
+  saveProgress(state.blockId, state.setId, state.score, total, state.wrong.map(w=>w.id), state.reviewMode);
 
   track("quiz_complete", {
     block_id: state.blockId,
+    set_id: state.setId,
     score: state.score,
     total: total,
     review_mode: state.reviewMode,
@@ -331,29 +382,31 @@ function renderResult(){
 
   app.innerHTML = `
     <div class="quiz-top">
-      <button class="back-link" id="backBtn">&larr; ${block.title}</button>
+      <button class="back-link" id="backBtn">&larr; ${block.title} · ${set.label}</button>
       <div class="tonefreq">437Hz</div>
     </div>
     ${waveSvg()}
     <div class="score-card">
       <div class="big">${state.score} / ${total}</div>
-      <div class="small">${block.jp} · ${block.level}${state.reviewMode ? " · review run" : ""}</div>
+      <div class="small">${block.jp} · ${set.label} · ${block.level}${state.reviewMode ? " · review run" : ""}</div>
     </div>
     ${weakHtml}
     <div class="result-actions">
       ${showRetryWeak ? `<button class="btn-primary" id="retryWeakBtn">Redo weak points now (with AI Support)</button>` : ""}
-      <button class="btn-secondary" id="retryAllBtn">Retry full ${block.title} set</button>
+      <button class="btn-secondary" id="retryAllBtn">Retry full ${set.label}</button>
+      <button class="btn-secondary" id="setsBtn">Back to ${block.title} sets</button>
       <button class="btn-secondary" id="homeBtn">Back to islands</button>
     </div>
   `;
 
-  document.getElementById("backBtn").addEventListener("click", ()=>{ cancelSpeech(); state.screen="home"; renderHome(); });
+  document.getElementById("backBtn").addEventListener("click", ()=>{ cancelSpeech(); renderSets(state.blockId); });
+  document.getElementById("setsBtn").addEventListener("click", ()=>{ cancelSpeech(); renderSets(state.blockId); });
   document.getElementById("homeBtn").addEventListener("click", ()=>{ cancelSpeech(); state.screen="home"; renderHome(); });
-  document.getElementById("retryAllBtn").addEventListener("click", ()=> startBlock(state.blockId));
+  document.getElementById("retryAllBtn").addEventListener("click", ()=> startBlock(state.blockId, state.setId));
   if(showRetryWeak){
     document.getElementById("retryWeakBtn").addEventListener("click", ()=>{
-      track("weak_point_retry", {block_id: state.blockId, count: state.wrong.length});
-      startBlock(state.blockId, state.wrong.map(w=>w.id));
+      track("weak_point_retry", {block_id: state.blockId, set_id: state.setId, count: state.wrong.length});
+      startBlock(state.blockId, state.setId, state.wrong.map(w=>w.id));
     });
   }
 }
