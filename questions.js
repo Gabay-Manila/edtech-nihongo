@@ -2,7 +2,7 @@
    questions.js — edtech-nihongo content data
    Structure: island (BLOCKS) -> set -> questions.
    Each island has one or more sets of 15 questions. Add a new
-   set object (with a unique id, e.g. 'set3') to a block's
+   set object (with a unique id, e.g. 'set4') to a block's
    `sets` array to add more content — no other file needs
    to change. Keep exactly one correct:true per question.
    ========================================================= */
@@ -1152,6 +1152,567 @@ const BLOCKS = [
                 }
               ],
               "grammar": "ようび asks about days of the week — distinct from じ (time), にち (date/day count), and がつ (month)."
+            }
+          }
+        ]
+      },
+      {
+        "id": "set3",
+        "label": "Set 3",
+        "questions": [
+          {
+            "id": "st3-01",
+            "situation": "Someone asks what time it is now. It's 3 o'clock.",
+            "prompt": "Q：いま、なんじですか？",
+            "choices": [
+              {
+                "jp": "さんじです",
+                "correct": true
+              },
+              {
+                "jp": "さんがつです",
+                "correct": false
+              },
+              {
+                "jp": "さんにんです",
+                "correct": false
+              },
+              {
+                "jp": "さんかいです",
+                "correct": false
+              }
+            ],
+            "ai": {
+              "situation": "Telling the time is one of the most frequently needed everyday phrases.",
+              "vocab": [
+                {
+                  "jp": "いま",
+                  "en": "now"
+                },
+                {
+                  "jp": "なんじ",
+                  "en": "what time"
+                }
+              ],
+              "grammar": "なんじですか asks the time; answer with number + じ, e.g. さんじ = 3 o'clock."
+            }
+          },
+          {
+            "id": "st3-02",
+            "situation": "You want to say you don't like spicy food.",
+            "prompt": "Q：からい　たべものは　すきですか？",
+            "choices": [
+              {
+                "jp": "いいえ、すきじゃないです",
+                "correct": true
+              },
+              {
+                "jp": "はい、すきです",
+                "correct": false
+              },
+              {
+                "jp": "いいえ、おいしいです",
+                "correct": false
+              },
+              {
+                "jp": "はい、たかいです",
+                "correct": false
+              }
+            ],
+            "ai": {
+              "situation": "Being able to politely say you don't like something is just as useful as saying you do.",
+              "vocab": [
+                {
+                  "jp": "からい",
+                  "en": "spicy"
+                },
+                {
+                  "jp": "すきじゃないです",
+                  "en": "don't like"
+                }
+              ],
+              "grammar": "すきじゃないです (or すきではないです) is the negative form of すきです: 'don't like'."
+            }
+          },
+          {
+            "id": "st3-03",
+            "situation": "You're shopping for a shirt and want to know if they have it in blue.",
+            "prompt": "Q：あおい　シャツは　ありますか？",
+            "choices": [
+              {
+                "jp": "はい、あります",
+                "correct": true
+              },
+              {
+                "jp": "はい、います",
+                "correct": false
+              },
+              {
+                "jp": "はい、すきです",
+                "correct": false
+              },
+              {
+                "jp": "はい、いきます",
+                "correct": false
+              }
+            ],
+            "ai": {
+              "situation": "Asking if an item comes in a certain color is a very practical shopping phrase.",
+              "vocab": [
+                {
+                  "jp": "あおい",
+                  "en": "blue"
+                },
+                {
+                  "jp": "シャツ",
+                  "en": "shirt"
+                }
+              ],
+              "grammar": "Color + noun + は ありますか asks if a particular colored item is available."
+            }
+          },
+          {
+            "id": "st3-04",
+            "situation": "It's snowing outside and a friend points it out to you.",
+            "prompt": "Q：そとを　みて、なんと　いいますか？",
+            "choices": [
+              {
+                "jp": "ゆきですね",
+                "correct": true
+              },
+              {
+                "jp": "あめですよ",
+                "correct": false
+              },
+              {
+                "jp": "はれですね",
+                "correct": false
+              },
+              {
+                "jp": "かぜですね",
+                "correct": false
+              }
+            ],
+            "ai": {
+              "situation": "Commenting on the weather you can both see together is natural, easy small talk.",
+              "vocab": [
+                {
+                  "jp": "ゆき",
+                  "en": "snow"
+                },
+                {
+                  "jp": "あめ",
+                  "en": "rain"
+                },
+                {
+                  "jp": "はれ",
+                  "en": "clear weather"
+                },
+                {
+                  "jp": "かぜ",
+                  "en": "wind"
+                }
+              ],
+              "grammar": "Noun + ですね comments on something you both can see, inviting agreement."
+            }
+          },
+          {
+            "id": "st3-05",
+            "situation": "Someone asks your job. You're a nurse.",
+            "prompt": "Q：しごとは　なんですか？",
+            "choices": [
+              {
+                "jp": "かんごしです",
+                "correct": true
+              },
+              {
+                "jp": "かんごしに　います",
+                "correct": false
+              },
+              {
+                "jp": "かんごしでした",
+                "correct": false
+              },
+              {
+                "jp": "かんごしが　すきです",
+                "correct": false
+              }
+            ],
+            "ai": {
+              "situation": "Stating your job clearly comes up constantly in introductions and small talk.",
+              "vocab": [
+                {
+                  "jp": "かんごし",
+                  "en": "nurse"
+                }
+              ],
+              "grammar": "Reinforces なんですか for jobs — simply state the job name + です."
+            }
+          },
+          {
+            "id": "st3-06",
+            "situation": "A friend asks about your hobby. You like reading books.",
+            "prompt": "Q：しゅみは　なんですか？",
+            "choices": [
+              {
+                "jp": "ほんを　よむのが　すきです",
+                "correct": true
+              },
+              {
+                "jp": "ほんを　かいました",
+                "correct": false
+              },
+              {
+                "jp": "ほんでした",
+                "correct": false
+              },
+              {
+                "jp": "ほんが　あります",
+                "correct": false
+              }
+            ],
+            "ai": {
+              "situation": "Talking about hobbies is one of the easiest ways to bond with new acquaintances.",
+              "vocab": [
+                {
+                  "jp": "しゅみ",
+                  "en": "hobby"
+                },
+                {
+                  "jp": "ほんを よむ",
+                  "en": "to read a book"
+                }
+              ],
+              "grammar": "Verb + のが すきです expresses liking an activity: 'I like reading (books)'."
+            }
+          },
+          {
+            "id": "st3-07",
+            "situation": "You're taking a taxi and want to ask roughly how much the fare to the airport is.",
+            "prompt": "Q：くうこうまで　タクシーで　いくらですか？",
+            "choices": [
+              {
+                "jp": "さんせんえんぐらいです",
+                "correct": true
+              },
+              {
+                "jp": "さんじかんぐらいです",
+                "correct": false
+              },
+              {
+                "jp": "さんにんぐらいです",
+                "correct": false
+              },
+              {
+                "jp": "さんかいぐらいです",
+                "correct": false
+              }
+            ],
+            "ai": {
+              "situation": "Asking for an approximate fare or price is realistic — exact numbers aren't always known in advance.",
+              "vocab": [
+                {
+                  "jp": "〜ぐらい",
+                  "en": "about / approximately"
+                },
+                {
+                  "jp": "タクシー",
+                  "en": "taxi"
+                }
+              ],
+              "grammar": "〜ぐらい softens a number to mean 'about/approximately' — useful when an exact answer isn't needed."
+            }
+          },
+          {
+            "id": "st3-08",
+            "situation": "You want to buy 3 apples at a fruit stand.",
+            "prompt": "Q：りんごを　みっつ　かいたいです。なんと　いいますか？",
+            "choices": [
+              {
+                "jp": "りんごを　みっつ　ください",
+                "correct": true
+              },
+              {
+                "jp": "りんごが　みっつ　あります",
+                "correct": false
+              },
+              {
+                "jp": "りんごは　みっつでした",
+                "correct": false
+              },
+              {
+                "jp": "りんごを　みっつ　あげます",
+                "correct": false
+              }
+            ],
+            "ai": {
+              "situation": "Buying a specific quantity of fruit or small items is everyday market shopping.",
+              "vocab": [
+                {
+                  "jp": "りんご",
+                  "en": "apple"
+                },
+                {
+                  "jp": "みっつ",
+                  "en": "three (general counter)"
+                }
+              ],
+              "grammar": "Reinforces the つ counters with a new item — みっつ for three general objects, like apples."
+            }
+          },
+          {
+            "id": "st3-09",
+            "situation": "You're running late and want to apologize for arriving late to a meeting.",
+            "prompt": "Q：かいぎに　ちこくしました。なんと　いいますか？",
+            "choices": [
+              {
+                "jp": "すみません、おくれました",
+                "correct": true
+              },
+              {
+                "jp": "すみません、はやいです",
+                "correct": false
+              },
+              {
+                "jp": "すみません、げんきです",
+                "correct": false
+              },
+              {
+                "jp": "すみません、いそがしいです",
+                "correct": false
+              }
+            ],
+            "ai": {
+              "situation": "Apologizing for lateness politely and quickly is an important workplace habit.",
+              "vocab": [
+                {
+                  "jp": "ちこく",
+                  "en": "being late"
+                },
+                {
+                  "jp": "おくれる",
+                  "en": "to be late / delayed"
+                }
+              ],
+              "grammar": "すみません、おくれました is the standard apology for arriving late."
+            }
+          },
+          {
+            "id": "st3-10",
+            "situation": "A coworker invites you to eat lunch together. You happily accept.",
+            "prompt": "Q：いっしょに　ひるごはんを　たべませんか？",
+            "choices": [
+              {
+                "jp": "いいですね、たべましょう",
+                "correct": true
+              },
+              {
+                "jp": "いいえ、たべました",
+                "correct": false
+              },
+              {
+                "jp": "たべません",
+                "correct": false
+              },
+              {
+                "jp": "ひるごはんでした",
+                "correct": false
+              }
+            ],
+            "ai": {
+              "situation": "Lunch invitations from coworkers are a normal part of workplace bonding.",
+              "vocab": [
+                {
+                  "jp": "ひるごはん",
+                  "en": "lunch"
+                }
+              ],
+              "grammar": "Reuses the 〜ませんか invitation pattern with a new verb, たべる (to eat), answered with 〜ましょう."
+            }
+          },
+          {
+            "id": "st3-11",
+            "situation": "At the end of the day, you say goodbye to a friend, planning to meet again tomorrow.",
+            "prompt": "Q：また　あした　あいます。なんと　いいますか？",
+            "choices": [
+              {
+                "jp": "また　あした",
+                "correct": true
+              },
+              {
+                "jp": "はじめまして",
+                "correct": false
+              },
+              {
+                "jp": "ごちそうさまでした",
+                "correct": false
+              },
+              {
+                "jp": "おねがいします",
+                "correct": false
+              }
+            ],
+            "ai": {
+              "situation": "また あした is one of the most common casual goodbyes among friends and coworkers.",
+              "vocab": [
+                {
+                  "jp": "また　あした",
+                  "en": "see you tomorrow"
+                }
+              ],
+              "grammar": "また + time word is a simple, casual way to say 'see you 〜' — また あした = 'see you tomorrow'."
+            }
+          },
+          {
+            "id": "st3-12",
+            "situation": "Someone asks what your favorite season is. You like summer.",
+            "prompt": "Q：すきな　きせつは　なんですか？",
+            "choices": [
+              {
+                "jp": "なつが　すきです",
+                "correct": true
+              },
+              {
+                "jp": "なつでした",
+                "correct": false
+              },
+              {
+                "jp": "なつに　いきます",
+                "correct": false
+              },
+              {
+                "jp": "なつを　あげます",
+                "correct": false
+              }
+            ],
+            "ai": {
+              "situation": "Talking about favorite seasons is light, easy small talk that comes up often.",
+              "vocab": [
+                {
+                  "jp": "きせつ",
+                  "en": "season"
+                },
+                {
+                  "jp": "なつ",
+                  "en": "summer"
+                }
+              ],
+              "grammar": "Reinforces 〜が すきです with a new topic — seasons."
+            }
+          },
+          {
+            "id": "st3-13",
+            "situation": "You're very busy this week and want to say you have no free time.",
+            "prompt": "Q：こんしゅうは　じかんが　ありますか？",
+            "choices": [
+              {
+                "jp": "いいえ、じかんが　ありません",
+                "correct": true
+              },
+              {
+                "jp": "いいえ、じかんに　います",
+                "correct": false
+              },
+              {
+                "jp": "はい、じかんでした",
+                "correct": false
+              },
+              {
+                "jp": "いいえ、じかんが　すきです",
+                "correct": false
+              }
+            ],
+            "ai": {
+              "situation": "Saying you don't have free time is a common, polite way to explain you're busy.",
+              "vocab": [
+                {
+                  "jp": "じかんが ありません",
+                  "en": "have no time"
+                },
+                {
+                  "jp": "こんしゅう",
+                  "en": "this week"
+                }
+              ],
+              "grammar": "ありません is the negative of あります — used to say something (like free time) doesn't exist."
+            }
+          },
+          {
+            "id": "st3-14",
+            "situation": "You're describing a bag as small.",
+            "prompt": "Q：その　かばんは　どうですか？",
+            "choices": [
+              {
+                "jp": "ちいさいです",
+                "correct": true
+              },
+              {
+                "jp": "おおきいです",
+                "correct": false
+              },
+              {
+                "jp": "たかいです",
+                "correct": false
+              },
+              {
+                "jp": "やすいです",
+                "correct": false
+              }
+            ],
+            "ai": {
+              "situation": "Describing the size of everyday objects is basic, frequently used vocabulary.",
+              "vocab": [
+                {
+                  "jp": "かばん",
+                  "en": "bag"
+                },
+                {
+                  "jp": "ちいさい",
+                  "en": "small"
+                },
+                {
+                  "jp": "おおきい",
+                  "en": "big"
+                }
+              ],
+              "grammar": "Simple い-adjective answers describe size or appearance directly."
+            }
+          },
+          {
+            "id": "st3-15",
+            "situation": "Someone politely asks your age. You are 20.",
+            "prompt": "Q：おいくつですか？",
+            "choices": [
+              {
+                "jp": "にじゅっさいです",
+                "correct": true
+              },
+              {
+                "jp": "にじゅっぷんです",
+                "correct": false
+              },
+              {
+                "jp": "にじゅうにちです",
+                "correct": false
+              },
+              {
+                "jp": "にじゅっかいです",
+                "correct": false
+              }
+            ],
+            "ai": {
+              "situation": "おいくつですか is the polite way to ask someone's age, common in early conversations.",
+              "vocab": [
+                {
+                  "jp": "おいくつですか",
+                  "en": "how old are you (polite)"
+                },
+                {
+                  "jp": "にじゅっさい",
+                  "en": "20 years old"
+                }
+              ],
+              "grammar": "さい is the counter for age — distinct from ぷん (minutes), にち (days), and かい (floors/times)."
             }
           }
         ]
