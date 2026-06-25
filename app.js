@@ -84,12 +84,13 @@ function speakUtterance(text){
 }
 // Auto-plays prompt → いち → に → さん → よん, queued back-to-back, no buttons.
 const COUNT_JP = ["いち","に","さん","よん"];
-function speakQuestion(q){
+function speakQuestion(q, choicesOverride){
   cancelSpeech(); // stop anything left over from the previous question first
   try{
     if(!window.speechSynthesis) return;
+    const choices = choicesOverride || q.choices;
     speakUtterance(q.prompt);
-    q.choices.forEach((c,i)=> speakUtterance(`${COUNT_JP[i] || (i+1)}、${c.jp}`));
+    choices.forEach((c,i)=> speakUtterance(`${COUNT_JP[i] || (i+1)}、${c.jp}`));
   }catch(e){ /* speech synthesis unsupported or blocked — fail silently */ }
 }
 
@@ -254,7 +255,11 @@ function renderQuiz(){
   const q = state.queue[state.index];
   const pct = Math.round((state.index/state.queue.length)*100);
 
-  const choicesHtml = q.choices.map((c,i)=>`
+  // Shuffle a COPY of the choices for display — the correct:true flag travels
+  // with each choice object, so scoring stays accurate regardless of order.
+  const choices = shuffle(q.choices);
+
+  const choicesHtml = choices.map((c,i)=>`
     <button class="choice" data-idx="${i}">${c.jp}<span class="tag"></span></button>
   `).join("");
 
@@ -285,7 +290,7 @@ function renderQuiz(){
   `;
 
   // Auto-fire the moment this screen is drawn — no tap required.
-  speakQuestion(q);
+  speakQuestion(q, choices);
 
   document.getElementById("backBtn").addEventListener("click", ()=>{ cancelSpeech(); renderSets(state.blockId); });
   const aiBtn = document.getElementById("aiBtn");
@@ -306,10 +311,10 @@ function renderQuiz(){
       cancelSpeech();
       state.answered = true;
       const idx = Number(btn.dataset.idx);
-      const picked = q.choices[idx];
+      const picked = choices[idx];
       choiceButtons.forEach((b,i)=>{
         b.disabled = true;
-        if(q.choices[i].correct){
+        if(choices[i].correct){
           b.classList.add("correct");
           b.querySelector(".tag").textContent = "CORRECT";
         }
