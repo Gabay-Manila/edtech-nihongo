@@ -159,6 +159,16 @@ function renderHome(){
     <div class="hero">
       <h1>Pick an island. Learn by situation, not by chapter.</h1>
       <p>Every quiz shows the English context first. Tap <b>AI Support</b> any time you need the situation, vocabulary, or grammar explained in plain English before you choose.</p>
+      <div style="margin-top:2px;">
+        <button id="howToToggle" style="background:none;border:none;color:var(--sun);font-size:13px;font-weight:600;text-decoration:underline;cursor:pointer;padding:0;">📖 How to use this app / 使い方</button>
+      </div>
+      <div id="howToPanel" style="display:none;margin-top:12px;background:var(--sun-soft);border:1px solid #e3b89c;border-radius:12px;padding:14px 16px;font-size:13.5px;line-height:1.6;">
+        <div style="font-weight:700;color:#7a3216;margin-bottom:8px;">🎯 Goal: clear all 180 questions to pass the JFT-Basic exam.<br><span style="font-weight:500;font-size:12.5px;">目標：全180問クリアでJFT-Basic合格を目指す。</span></div>
+        <div style="margin-bottom:8px;">🔊 <b>Listen first.</b> Tap choices and train your ear — don't just read.<br><span style="color:#5e4030;font-size:12.5px;">まず「耳」で聴く。読むだけでなく音とリズムを覚える。</span></div>
+        <div style="margin-bottom:8px;">💡 <b>Stuck? Tap AI Support</b> for an instant plain-English explanation.<br><span style="color:#5e4030;font-size:12.5px;">迷ったらAI Supportを即タップ。</span></div>
+        <div style="margin-bottom:8px;">🔀 <b>Choices shuffle every time</b> — match the situation, not the button position.<br><span style="color:#5e4030;font-size:12.5px;">選択肢は毎回シャッフル。位置の暗記は通用しない。</span></div>
+        <div>⏱️ <b>5 minutes a day.</b> Finish 1 island (3 sets, 45 questions), then stop.<br><span style="color:#5e4030;font-size:12.5px;">1日5分。1島(3セット・45問)で店じまい。</span></div>
+      </div>
     </div>
     <div class="islands">${islands}</div>
     <footer>
@@ -174,6 +184,12 @@ function renderHome(){
       </div>
     </footer>
   `;
+
+  document.getElementById("howToToggle").addEventListener("click", ()=>{
+    const panel = document.getElementById("howToPanel");
+    panel.style.display = panel.style.display === "none" ? "block" : "none";
+    track("how_to_use_opened", {});
+  });
 
   document.getElementById("complianceToggle").addEventListener("click", ()=>{
     const panel = document.getElementById("compliancePanel");
