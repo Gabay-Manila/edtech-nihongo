@@ -147,6 +147,12 @@
     align-items:center;
     justify-content:space-between;
     margin-bottom:4px;
+    gap:10px;
+  }
+  .quiz-top-right{
+    display:flex;
+    align-items:center;
+    gap:10px;
   }
   .back-link{
     font-size:13px;
@@ -157,6 +163,40 @@
     padding:6px 0;
   }
   .back-link:hover{color:var(--umi);}
+  /* romaji toggle */
+  .romaji-toggle{
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.03em;
+    background:var(--umi-soft);
+    color:var(--umi);
+    border:1px solid var(--umi-soft);
+    border-radius:999px;
+    padding:5px 12px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .romaji-toggle:hover:not(:disabled){border-color:var(--umi);}
+  .romaji-toggle.on{
+    background:var(--umi);
+    color:#fff;
+  }
+  .romaji-toggle:disabled{
+    opacity:.45;
+    cursor:default;
+  }
+  /* romaji ruby */
+  ruby{ruby-position:over;}
+  rt{
+    font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;
+    font-size:0.42em;
+    font-weight:500;
+    letter-spacing:.01em;
+    color:var(--ink-soft);
+    text-transform:lowercase;
+  }
+  .prompt-jp ruby{margin-right:1px;}
+  .choice ruby{margin-right:1px;}
   .progress-track{
     height:6px;
     background:var(--umi-soft);
@@ -191,7 +231,7 @@
   .prompt-jp{
     font-size:22px;
     margin:0 0 18px;
-    line-height:1.5;
+    line-height:1.9;
   }
   .choices{
     display:flex;
@@ -208,6 +248,7 @@
     font-size:17px;
     cursor:pointer;
     transition:border-color .12s ease, background .12s ease;
+    line-height:1.9;
   }
   .choice:hover:not(:disabled){border-color:var(--umi);}
   .choice:disabled{cursor:default;}
@@ -383,6 +424,8 @@
 <body>
 <div id="app"></div>
 
+<!-- wanakana: converts kana to romaji client-side for the "ローマ字" ruby toggle -->
+<script src="https://cdn.jsdelivr.net/npm/wanakana@5.3.1/umd/wanakana.min.js"></script>
 <script src="questions.js"></script>
 <script src="app.js"></script>
 </body>
