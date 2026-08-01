@@ -53,6 +53,43 @@ function saveProgress(blockId, setId, score, total, weakIds, reviewMode){
   try{ localStorage.setItem(STORE_KEY, JSON.stringify(p)); }catch(e){}
 }
 
+/* ---------- romaji ruby preference (persisted separately from quiz progress) ---------- */
+const ROMAJI_KEY = "edtechnihongo_romaji_v1";
+function loadRomajiPref(){
+  try{ return localStorage.getItem(ROMAJI_KEY) === "1"; }catch(e){ return false; }
+}
+function saveRomajiPref(on){
+  try{ localStorage.setItem(ROMAJI_KEY, on ? "1" : "0"); }catch(e){}
+}
+
+/* ---------- romaji ruby rendering (wanakana, loaded via CDN in index.html) ---------
+   questions.js is written almost entirely in kana, so wanakana.toRomaji() can
+   convert prompt/choice text directly with no changes to the question data.
+   A handful of words include kanji (e.g. 社員), which wanakana cannot read on
+   its own — add those here as they come up. Key = exact word as it appears
+   between the full-width spaces (　) in questions.js, value = its romaji. */
+const KANJI_ROMAJI_OVERRIDES = {
+  "社員": "shain"
+};
+function jpToRomaji(word){
+  if(KANJI_ROMAJI_OVERRIDES[word]) return KANJI_ROMAJI_OVERRIDES[word];
+  try{
+    return (window.wanakana && window.wanakana.toRomaji) ? window.wanakana.toRomaji(word) : word;
+  }catch(e){ return word; }
+}
+function toRubyHtml(text){
+  // questions.js separates words with the full-width space 「　」 — split on
+  // that so each word gets its own romaji reading above it, rather than one
+  // long romaji string over the whole sentence.
+  return text.split("　").filter(Boolean).map(word=>{
+    const romaji = jpToRomaji(word);
+    return `<ruby>${escapeHtml(word)}<rt>${escapeHtml(romaji)}</rt></ruby>`;
+  }).join(" ");
+}
+function renderJp(text){
+  return state.showRomaji ? toRubyHtml(text) : escapeHtml(text);
+}
+
 /* ---------- audio (437Hz brand tone) ---------- */
 let audioCtx = null;
 function tone(freq, ms, type){
@@ -120,7 +157,10 @@ let state = {
   wrong:[],          // question objects answered wrong this run
   reviewMode:false,
   answered:false,
-  hintOpen:false
+  hintOpen:false,
+  showRomaji:loadRomajiPref(),
+  currentChoices:null,     // shuffled choices for the question on screen (stable across re-renders)
+  currentChoicesFor:null   // question id currentChoices belongs to
 };
 
 /* ---------- rendering ---------- */
@@ -166,6 +206,7 @@ function renderHome(){
         <div style="font-weight:700;color:#7a3216;margin-bottom:8px;">🎯 Goal: clear all 180 questions to pass the JFT-Basic exam.<br><span style="font-weight:500;font-size:12.5px;">目標：全180問クリアでJFT-Basic合格を目指す。</span></div>
         <div style="margin-bottom:8px;">🔊 <b>Listen first.</b> Tap choices and train your ear — don't just read.<br><span style="color:#5e4030;font-size:12.5px;">まず「耳」で聴く。読むだけでなく音とリズムを覚える。</span></div>
         <div style="margin-bottom:8px;">💡 <b>Stuck? Tap AI Support</b> for an instant plain-English explanation.<br><span style="color:#5e4030;font-size:12.5px;">迷ったらAI Supportを即タップ。</span></div>
+        <div style="margin-bottom:8px;">🔤 <b>Need reading help? Tap ローマ字</b> at the top of any quiz to show romaji above the Japanese.<br><span style="color:#5e4030;font-size:12.5px;">読み方に迷ったら「ローマ字」をタップ。</span></div>
         <div style="margin-bottom:8px;">🔀 <b>Choices shuffle every time</b> — match the situation, not the button position.<br><span style="color:#5e4030;font-size:12.5px;">選択肢は毎回シャッフル。位置の暗記は通用しない。</span></div>
         <div>⏱️ <b>5 minutes a day.</b> Finish 1 island (3 sets, 45 questions), then stop.<br><span style="color:#5e4030;font-size:12.5px;">1日5分。1島(3セット・45問)で店じまい。</span></div>
       </div>
@@ -260,6 +301,8 @@ function startBlock(blockId, setId, reviewIds){
   state.wrong = [];
   state.answered = false;
   state.hintOpen = false;
+  state.currentChoices = null;
+  state.currentChoicesFor = null;
 
   track("block_start", {block_id: blockId, set_id: setId, review_mode: state.reviewMode, question_count: pool.length});
   renderQuiz();
@@ -273,21 +316,30 @@ function renderQuiz(){
 
   // Shuffle a COPY of the choices for display — the correct:true flag travels
   // with each choice object, so scoring stays accurate regardless of order.
-  const choices = shuffle(q.choices);
+  // Cached per-question so toggling "ローマ字" mid-question doesn't reshuffle
+  // the on-screen order out from under the learner.
+  if(state.currentChoicesFor !== q.id){
+    state.currentChoices = shuffle(q.choices);
+    state.currentChoicesFor = q.id;
+  }
+  const choices = state.currentChoices;
 
   const choicesHtml = choices.map((c,i)=>`
-    <button class="choice" data-idx="${i}">${c.jp}<span class="tag"></span></button>
+    <button class="choice" data-idx="${i}">${renderJp(c.jp)}<span class="tag"></span></button>
   `).join("");
 
   app.innerHTML = `
     <div class="quiz-top">
       <button class="back-link" id="backBtn">&larr; ${block.title} · ${set.label}</button>
-      <div class="tonefreq">${state.index+1} / ${state.queue.length}</div>
+      <div class="quiz-top-right">
+        <button id="romajiToggle" class="romaji-toggle ${state.showRomaji ? 'on' : ''}" ${state.answered ? 'disabled' : ''}>ローマ字</button>
+        <div class="tonefreq">${state.index+1} / ${state.queue.length}</div>
+      </div>
     </div>
     <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
     ${state.reviewMode ? `<div class="review-banner">Weak-point review: redoing the questions you missed last time, with AI Support handy.</div>` : ""}
     <div class="situation-en"><b>Situation:</b> ${escapeHtml(q.situation)}</div>
-    <p class="prompt-jp jp">${q.prompt}</p>
+    <p class="prompt-jp jp">${renderJp(q.prompt)}</p>
     <div class="choices">${choicesHtml}</div>
 
     <button class="ai-btn" id="aiBtn"><span class="bolt">💡</span> AI Support (Hint)</button>
@@ -309,6 +361,15 @@ function renderQuiz(){
   speakQuestion(q, choices);
 
   document.getElementById("backBtn").addEventListener("click", ()=>{ cancelSpeech(); renderSets(state.blockId); });
+
+  document.getElementById("romajiToggle").addEventListener("click", ()=>{
+    if(state.answered) return; // locked once answered, see disabled attribute above
+    state.showRomaji = !state.showRomaji;
+    saveRomajiPref(state.showRomaji);
+    track("romaji_toggle", {on: state.showRomaji});
+    renderQuiz();
+  });
+
   const aiBtn = document.getElementById("aiBtn");
   const aiPanel = document.getElementById("aiPanel");
   let aiOpenedLogged = false;
@@ -352,6 +413,7 @@ function renderQuiz(){
         review_mode: state.reviewMode
       });
       document.getElementById("nextBtn").disabled = false;
+      document.getElementById("romajiToggle").disabled = true;
     });
   });
 
