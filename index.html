@@ -424,8 +424,10 @@
 <body>
 <div id="app"></div>
 
-<!-- wanakana: converts kana to romaji client-side for the "ローマ字" ruby toggle -->
-<script src="https://cdn.jsdelivr.net/npm/wanakana@5.3.1/umd/wanakana.min.js"></script>
+<!-- wanakana: converts kana to romaji client-side for the "ローマ字" ruby toggle.
+     Self-hosted (not a CDN URL) so it can't silently 404 again — it's
+     the exact wanakana@5.3.1 UMD build, unpacked from the npm tarball. -->
+<script src="wanakana.min.js"></script>
 <script src="questions.js"></script>
 <script src="app.js"></script>
 </body>
