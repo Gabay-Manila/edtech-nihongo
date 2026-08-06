@@ -419,9 +419,73 @@
   @media (prefers-reduced-motion: reduce){
     .island,.progress-fill{transition:none;}
   }
+
+  /* ---------- external tools banner (manual / practice app links) ---------- */
+  .ext-banner{
+    max-width:720px;
+    margin:0 auto;
+    padding:14px 18px 0;
+  }
+  .ext-banner-inner{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .ext-link-card{
+    flex:1;
+    min-width:220px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:12px 14px;
+    text-decoration:none;
+    color:var(--ink);
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .ext-link-card:hover{
+    transform:translateY(-2px);
+    border-color:var(--umi);
+    box-shadow:0 8px 20px -10px rgba(47,72,88,.35);
+  }
+  .ext-link-icon{
+    flex-shrink:0;
+    width:34px;height:34px;
+    border-radius:9px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:17px;
+    background:var(--umi-soft);
+  }
+  .ext-link-card.sun .ext-link-icon{background:var(--sun-soft);}
+  .ext-link-text .ttl{font-size:13.5px;font-weight:700;}
+  .ext-link-text .sub{font-size:11.5px;color:var(--ink-soft);}
 </style>
 </head>
 <body>
+
+<!-- Static navigation banner: manual & practice app.
+     Placed outside #app so it always renders regardless of the JS-driven quiz screens. -->
+<div class="ext-banner">
+  <div class="ext-banner-inner">
+    <a class="ext-link-card" href="/manual/" target="_blank" rel="noopener">
+      <span class="ext-link-icon">📘</span>
+      <span class="ext-link-text">
+        <span class="ttl">講師指導マニュアル</span><br>
+        <span class="sub">Instructor Manual for teachers</span>
+      </span>
+    </a>
+    <a class="ext-link-card sun" href="/practice/" target="_blank" rel="noopener">
+      <span class="ext-link-icon">✏️</span>
+      <span class="ext-link-text">
+        <span class="ttl">美文字＆漢字 練習アプリ</span><br>
+        <span class="sub">Numbers・Kana・129 Kanji writing practice</span>
+      </span>
+    </a>
+  </div>
+</div>
+
 <div id="app"></div>
 
 <!-- wanakana: converts kana to romaji client-side for the "ローマ字" ruby toggle.
